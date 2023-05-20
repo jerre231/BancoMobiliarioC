@@ -1,9 +1,23 @@
 #include "definitions.c"
 
 bool running = true; //o while do jogo começa rodando por enquanto
-    
+
 int turnos = 0;
     //quantidade de turnos total, turno atual de qual jogador
+
+int rollDice(){
+    int dice1 = (arc4random()%6)+1;
+    int dice2 = (arc4random()%6)+1;
+    int result[3];
+    result[0] = dice1;
+    result[1] = dice2;
+    if(dice1 == dice2){
+        result[2] = 1;
+    } else {
+        result[2] = 0;
+    }
+    return result;
+}
     
 int clearScreen(){
     system("clear");
@@ -55,22 +69,18 @@ int main(){
     
 // TODO: Menu Principal aqui <--
 
-declarePlayers();
+declarePlayers(players, playerCount, Nomes);
 
-int vetorAux[4] = {player1.turno, player2.turno, player3.turno, player4.turno};
-int turnoPlayer[4]; //TODO: Sort crescente do vetorAux
-int posFila = 0; //
+int turnoPlayer = 0; // TODO: Configurar essa variável com o sistema de turnos
 
 while(running){ //while do jogo em si
     // TODO: adicionar if, caso o jogador esteja na prisão
+    currentPlayer = &players[turnoPlayer];
     int opcao; // variável auxiliar em que será armazenada a opcao do jogador
-    char nomePlayerAtual[] = "SAMPLENAME";
-    printf("Oque deseja fazer %c?\n", nomePlayerAtual);
+    printf("1 - ");
+    printf("Oque deseja fazer %c?\n", currentPlayer->nome);
     scanf("%d", &opcao);
-    posFila++;
-    if(posFila > players){
-        posFila=0;
-    }
+    
 }
 
 return 0;
