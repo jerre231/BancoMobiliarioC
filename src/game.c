@@ -1,5 +1,10 @@
 #include "definitions.c"
 
+bool running = true; //o while do jogo começa rodando por enquanto
+    
+int turnos = 0;
+    //quantidade de turnos total, turno atual de qual jogador
+    
 int clearScreen(){
     system("clear");
 }
@@ -45,7 +50,28 @@ int printTable(){
     printf("\n                BRDWK LUXURY  PARK  CHANCE  SHORT PNSLVA   COM    NC    PCFC                ");
     printf("\n                       TAX    PLACE         LINE    AVE   CHEST   AVE   AVE                 ");
 }
+
 int main(){
-printTable();
+    
+// TODO: Menu Principal aqui <--
+
+declarePlayers();
+
+int vetorAux[4] = {player1.turno, player2.turno, player3.turno, player4.turno};
+int turnoPlayer[4]; //TODO: Sort crescente do vetorAux
+int posFila = 0; //
+
+while(running){ //while do jogo em si
+    // TODO: adicionar if, caso o jogador esteja na prisão
+    int opcao; // variável auxiliar em que será armazenada a opcao do jogador
+    char nomePlayerAtual[] = "SAMPLENAME";
+    printf("Oque deseja fazer %c?\n", nomePlayerAtual);
+    scanf("%d", &opcao);
+    posFila++;
+    if(posFila > players){
+        posFila=0;
+    }
+}
+
 return 0;
 }
