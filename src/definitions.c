@@ -8,6 +8,8 @@ char Nomes[][20] = {"Nome1","Nome2","Nome3","Nome4"};// TODO: Leitura de nomes, 
 
 int playerCount = 4; // TODO: criar uma função aqui depois que o menu principal for criado
 
+int housesCount = 40;
+
 int startingMoney = 200; //Dinheiro Inicial dos players, TODO: pode ser ajustado?
 
 struct player{ //Definindo a as variáveis de cada jogador

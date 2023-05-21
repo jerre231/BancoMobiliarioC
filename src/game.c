@@ -1,5 +1,5 @@
 #include "definitions.c"
-
+#include "houses.c"
 bool running = true; //o while do jogo começa rodando por enquanto
 
 int turnos = 0;
@@ -70,6 +70,8 @@ int main(){
 // TODO: Menu Principal aqui <--
 
 declarePlayers(players, playerCount, Nomes);
+
+declareHouses(houses);
 
 int turnoPlayer = 0; // TODO: Configurar essa variável com o sistema de turnos
 
