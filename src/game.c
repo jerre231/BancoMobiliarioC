@@ -77,9 +77,10 @@ while(running){ //while do jogo em si
     // TODO: adicionar if, caso o jogador esteja na prisão
     currentPlayer = &players[turnoPlayer];
     int opcao; // variável auxiliar em que será armazenada a opcao do jogador
-    printf("1 - ");
-    printf("Oque deseja fazer %c?\n", currentPlayer->nome);
+    printf("1 - \n");
+    printf("Oque deseja fazer %s?\n", currentPlayer->nome);
     scanf("%d", &opcao);
+
     
 }
 
