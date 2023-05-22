@@ -33,7 +33,7 @@ void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma 
 }
     
 int clearScreen(){
-    system("clear");
+    system("clear || cls");
 }
 int printTable(){
     clearScreen();
