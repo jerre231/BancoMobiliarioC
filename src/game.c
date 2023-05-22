@@ -18,6 +18,18 @@ int rollDice(){
     }
     return result;
 }
+
+void order(int *vetor, size_t tamanho) {
+    for (int i = 0; i < tamanho - 1; ++i) {
+        for (int j = i + 1; j < tamanho; ++j) {
+            if (vetor[i] > vetor[j]) {
+                int temp = vetor[i];
+                vetor[i] = vetor[j];
+                vetor[j] = temp;
+            }
+        }
+    }
+}
     
 int clearScreen(){
     system("clear");
