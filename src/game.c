@@ -18,6 +18,19 @@ int rollDice(){
     }
     return result;
 }
+
+void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
+{
+    for (int i = 0; i < tamanho - 1; ++i) {
+        for (int j = i + 1; j < tamanho; ++j) {
+            if (vetor[i] > vetor[j]) {
+                int temp = vetor[i];
+                vetor[i] = vetor[j];
+                vetor[j] = temp;
+            }
+        }
+    }
+}
     
 int clearScreen(){
     system("clear");
