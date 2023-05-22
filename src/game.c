@@ -6,17 +6,8 @@ int turnos = 0;
     //quantidade de turnos total, turno atual de qual jogador
 
 int rollDice(){
-    int dice1 = (arc4random()%6)+1;
-    int dice2 = (arc4random()%6)+1;
-    int result[3];
-    result[0] = dice1;
-    result[1] = dice2;
-    if(dice1 == dice2){
-        result[2] = 1;
-    } else {
-        result[2] = 0;
-    }
-    return result;
+    int dice = (arc4random()%6)+1;
+    return dice;
 }
 
 void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
@@ -91,10 +82,85 @@ int turnoPlayer = 0; // TODO: Configurar essa variável com o sistema de turnos
 while(running){ //while do jogo em si
     // TODO: adicionar if, caso o jogador esteja na prisão
     currentPlayer = &players[turnoPlayer];
+    if(!(currentPlayer->prisao == 1)){
+        unsigned int rollIsOver:1 = 0;
+        int housesToWalk = 0;
+        while(!rollIsOver){
+            int roll1 = rollDice();
+            int roll2 = rollDice();
+            printf("%s rolou %d e %d para andar!\n", currentPlayer->nome, roll1, roll2);
+            housesToWalk += (roll1 + roll2);
+            if(roll1 == roll2){
+                rollIsOver = 1;
+            } else {
+                printf("%s rolou números iguais para andar, rola de novo!", currentPlayer->nome);
+            }
+        }
+        currentPlayer->pos += housesToWalk;
+        if(currentPlayer->pos >= 40){
+            currentPlayer->pos -= 40;
+        }
+    }
+    currentHouse = &houses[currentPlayer->pos];
     int opcao; // variável auxiliar em que será armazenada a opcao do jogador
-    printf("1 - \n");
-    printf("Oque deseja fazer %s?\n", currentPlayer->nome);
-    scanf("%d", &opcao);
+    switch (currentHouse->type) {
+        case HOUSE_STD:
+        printf("Você caiu na casa %s, ", currentHouse->name);
+        if(currentHouse->isOwnedBySomeone){
+            printf("ela é possuída por %s.\n", players[currentHouse->ownerID].nome);
+            printf("Você deve pagar %d$ ao proprietário.\n", currentHouse->rent);
+            // TODO: adicionar o sistema de pagar aluguel
+        } else {
+            printf("ela não é possuída por ninguém.\n%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
+            printf("1 - SIM\n2 - NAO");
+            scanf("%d", &opcao);
+            if(opcao == '1'){
+                currentPlayer->money -= currentHouse->cost;
+                currentHouse->isOwnedBySomeone = TRUE;
+                currentHouse->ownerID = currentPlayer->ID;
+                printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
+            }
+        }
+        break;
+
+        case HOUSE_CMP:
+        printf("Você caiu na casa %s, ", currentHouse->name);
+        if(currentHouse->isOwnedBySomeone){
+            printf("ela é possuída por %s.\n", players[currentHouse->ownerID].nome);
+            printf("Você deve pagar %d$ ao proprietário.\n", currentHouse->rent);
+            // TODO: adicionar o sistema de pagar aluguel
+        } else {
+            printf("ela não é possuída por ninguém.\n%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
+            printf("1 - SIM\n2 - NAO");
+            scanf("%d", &opcao);
+            if(opcao == '1'){
+                currentPlayer->money -= currentHouse->cost;
+                currentHouse->isOwnedBySomeone = TRUE;
+                currentHouse->ownerID = currentPlayer->ID;
+                printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
+            }
+        }
+
+        break;
+
+        case GO_TO_JAIL:
+        printf("Opa! Você está preso!");
+        currentPlayer->prisao = TRUE;
+        currentPlayer->turnosPrisao = 3;
+        // TODO: adicionar sistema de prisao
+        break;
+
+        case FREE_DAY:
+        printf("Você recebeu um dia de folga! Fique um turno sem jogar.");
+        break;
+
+        case SORTE_OU_REVES:
+        printf("Você vai retirar uma carta aleatória!");
+        // TODO: adicionar sistema de carta sorte ou reves
+        break;
+    }
+    
+    
 
     
 }
