@@ -36,6 +36,8 @@ int clearScreen(){
 }
 int printTable(){
     clearScreen();
+    restoreConsole();
+    gotoXY(0,0);
     printf("\n");
     printf("\n                ST.CH  ELCT  STATES VRGNIA PNSLVA  ST.JA   COM    TEN    NY    FREE         ");
     printf("\n                 AVE   COMP    AVE    AVE   RAIL    AVE   CHEST   AVE   AVE    PARK         ");
@@ -85,6 +87,13 @@ declarePlayers(players, playerCount, Nomes);
 
 declareHouses(houses);
 
+printTable();
+
+for(int i=0; i<playerCount; i++){
+    currentPlayer = &players[i];
+    movePlayer(currentPlayer, 0, 0);
+}
+
 int turnoPlayer = 0; // TODO: Configurar essa variável com o sistema de turnos
 
 while(running){ //while do jogo em si
@@ -96,6 +105,7 @@ while(running){ //while do jogo em si
         while(!rollIsOver){
             int roll1 = rollDice();
             int roll2 = rollDice();
+            gotoXY(1,40);
             printf("%s rolou %d e %d para andar!\n", currentPlayer->nome, roll1, roll2);
             housesToWalk += (roll1 + roll2);
             if(roll1 != roll2){
