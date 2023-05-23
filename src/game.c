@@ -1,5 +1,6 @@
+#include "definitions.c"
 #include "houses.c"
-
+#include <windows.h>
 bool running = true; //o while do jogo começa rodando por enquanto
 
 int turnos = 0;

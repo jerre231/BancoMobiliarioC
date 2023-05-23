@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
-//#include <windows.h>
 
 enum colours  {RESET,INCREASED_INTENSITY,BLACK=30,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE,\
                RED_BG=41,GREEN_BG,YELLOW_BG,BLUE_BG,PURPLE_BG,CYAN_BG,WHITE_BG,\
