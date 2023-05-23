@@ -1,5 +1,6 @@
 #include "definitions.c"
 #include "houses.c"
+#include <windows.h>
 bool running = true; //o while do jogo começa rodando por enquanto
 
 int turnos = 0;
@@ -21,6 +22,14 @@ void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma 
             }
         }
     }
+}
+
+void position(int x, int y) //função para definir a posição de algum print no terminal, deve ser escrito: position("coordenada de x", "coordenada de y");
+{                           //[gotoXY!]
+    COORD c;                //precisa do #include <windows.h>
+    c.X = x;
+    c.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
     
 int clearScreen(){
