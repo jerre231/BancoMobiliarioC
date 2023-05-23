@@ -1,6 +1,5 @@
-#include "definitions.c"
-#include "houses.c"
-#include <windows.h>
+#include "houses.c" //bora amassar quumica amanha
+
 bool running = true; //o while do jogo começa rodando por enquanto
 
 int turnos = 0;
@@ -99,8 +98,7 @@ while(running){ //while do jogo em si
             int roll2 = rollDice();
             printf("%s rolou %d e %d para andar!\n", currentPlayer->nome, roll1, roll2);
             housesToWalk += (roll1 + roll2);
-            if(roll1 == roll2){
-                rollIsOver = 1;
+            if(roll1 == roll2){https://github.com/MaquinaDeCoxinha/BancoMobiliarioC
             } else {
                 printf("%s rolou números iguais para andar, rola de novo!", currentPlayer->nome);
             }
