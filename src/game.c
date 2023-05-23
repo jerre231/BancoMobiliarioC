@@ -1,6 +1,5 @@
-#include "definitions.c"
 #include "houses.c"
-#include <windows.h>
+
 bool running = true; //o while do jogo começa rodando por enquanto
 
 int turnos = 0;
@@ -24,13 +23,13 @@ void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma 
     }
 }
 
-void position(int x, int y) //função para definir a posição de algum print no terminal, deve ser escrito: position("coordenada de x", "coordenada de y");
+/*void position(int x, int y) //função para definir a posição de algum print no terminal, deve ser escrito: position("coordenada de x", "coordenada de y");
 {                           //[gotoXY!]
     COORD c;                //precisa do #include <windows.h>
     c.X = x;
     c.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
-}
+}*/
     
 int clearScreen(){
     system("clear || cls");
@@ -92,17 +91,17 @@ while(running){ //while do jogo em si
     // TODO: adicionar if, caso o jogador esteja na prisão
     currentPlayer = &players[turnoPlayer];
     if(!(currentPlayer->prisao == 1)){
-        unsigned int rollIsOver:1 = 0;
+        int rollIsOver = 0;
         int housesToWalk = 0;
         while(!rollIsOver){
             int roll1 = rollDice();
             int roll2 = rollDice();
             printf("%s rolou %d e %d para andar!\n", currentPlayer->nome, roll1, roll2);
             housesToWalk += (roll1 + roll2);
-            if(roll1 == roll2){
+            if(roll1 != roll2){
                 rollIsOver = 1;
             } else {
-                printf("%s rolou números iguais para andar, rola de novo!", currentPlayer->nome);
+                printf("%s rolou números iguais para andar, rola de novo!\n", currentPlayer->nome);
             }
         }
         currentPlayer->pos += housesToWalk;
@@ -121,7 +120,7 @@ while(running){ //while do jogo em si
             // TODO: adicionar o sistema de pagar aluguel
         } else {
             printf("ela não é possuída por ninguém.\n%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
-            printf("1 - SIM\n2 - NAO");
+            printf("1 - SIM\n2 - NAO\n");
             scanf("%d", &opcao);
             if(opcao == '1'){
                 currentPlayer->money -= currentHouse->cost;
@@ -168,10 +167,6 @@ while(running){ //while do jogo em si
         // TODO: adicionar sistema de carta sorte ou reves
         break;
     }
-    
-    
-
-    
 }
 
 return 0;
