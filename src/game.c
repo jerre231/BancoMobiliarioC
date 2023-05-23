@@ -1,4 +1,4 @@
-#include "houses.c" //joao 'e legal
+#include "houses.c" //cachorro
 
 bool running = true; //o while do jogo começa rodando por enquanto
 
