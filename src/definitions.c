@@ -3,12 +3,15 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
+#include <ncurses.h>
 
 enum colours  {RESET,INCREASED_INTENSITY,BLACK=30,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE,\
                RED_BG=41,GREEN_BG,YELLOW_BG,BLUE_BG,PURPLE_BG,CYAN_BG,WHITE_BG,\
                LIGHTBLACK_BG=100,LIGHTRED_BG,LIGHTGREEN_BG,LIGHTYELLOW_BG,LIGHTBLUE_BG,LIGHTPURPLE_BG,LIGHTCYAN_BG,PUREWHITE_BG};
 
-enum boolean {FALSE, TRUE};
+//enum falseoutrue {FALSE, TRUE};
+//#define TRUE = 1
+//#define FALSE = 0
 
 char Nomes[][20] = {"Nome1","Nome2","Nome3","Nome4"};// TODO: Leitura de nomes, nomes exemplo temporarios
 
@@ -87,9 +90,9 @@ void moveCursorRight(int X) {
 void moveCursorLeft(int X) {
     printf("\x1b[%dD",X);
 }
-int getCursorPosition() {
+/* int getCursorPosition() {
     printf("\x1b[s");
-}
+} */
 void writeSomethingSomewhereAndReturn(int X, int Y) {
     printf("\x1b 7");
     moveCursorUp(Y);
@@ -97,9 +100,11 @@ void writeSomethingSomewhereAndReturn(int X, int Y) {
     printf("o");
     printf("\x1b 8");
 }
-gotoXY(X, Y){
-printf("%c[%d;%df",0x1B,Y,X); }
+/* void gotoXY(int X, int Y){
+printf("%c[%d;%df",0x1B,Y,X);
+} */
 
+/*
 void movePlayer(struct player *currentPlayer,int OldLocationID,int NewLocationID)
 {
     int mapXY[40][2]={{ 9,36},{ 9,33},{ 9,30},{ 9,27},{ 9,24},{ 9,21},{ 9,18},{ 9,15},{ 9,12},{ 9, 9},\
@@ -111,6 +116,21 @@ void movePlayer(struct player *currentPlayer,int OldLocationID,int NewLocationID
     printf(" ");
     changeTextColour(currentPlayer->colour);
     gotoXY(mapXY[NewLocationID][0]+(playerID)%4,mapXY[NewLocationID][1]+(playerID)/4);
+    printf("o");
+    changeTextColour(RESET);
+}
+*/
+void movePlayer(struct player *currentPlayer,int OldLocationID,int NewLocationID)
+{
+    int mapXY[40][2]={{ 9,36},{ 9,33},{ 9,30},{ 9,27},{ 9,24},{ 9,21},{ 9,18},{ 9,15},{ 9,12},{ 9, 9},\
+                    { 9, 6},{16, 6},{23, 6},{30, 6},{37, 6},{44, 6},{51, 6},{58, 6},{65, 6},{72, 6},\
+                    {79, 6},{79, 9},{79,12},{79,15},{79,18},{79,21},{79,24},{79,27},{79,30},{79,33},\
+                    {79,36},{72,36},{65,36},{58,36},{51,36},{44,36},{37,36},{30,36},{23,36},{16,36}};
+    int playerID = currentPlayer->ID;
+    move(mapXY[OldLocationID][0]+(playerID)%4,mapXY[OldLocationID][1]+(playerID)/4);
+    printf(" ");
+    changeTextColour(currentPlayer->colour);
+    move(mapXY[NewLocationID][0]+(playerID)%4,mapXY[NewLocationID][1]+(playerID)/4);
     printf("o");
     changeTextColour(RESET);
 }

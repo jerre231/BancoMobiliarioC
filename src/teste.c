@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "definitions.c"
 /* void gotoxy(int x,int y) { 
 
