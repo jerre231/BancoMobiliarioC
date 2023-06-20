@@ -21,7 +21,7 @@ int rollDice(){
 
 // int main
 int main(){
-srand((unsigned)TIME(NULL));
+srand((unsigned)time(NULL));
 // TODO: Menu Principal aqui <--
 
 declarePlayers(players, playerCount, Nomes);
