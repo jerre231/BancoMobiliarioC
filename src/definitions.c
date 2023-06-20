@@ -99,6 +99,9 @@ void writeSomethingSomewhereAndReturn(int X, int Y) {
     printf("\x1b 8");
 }
 
+#define move(X,Y)  printf("%c[%d;%df",0x1B,Y,X)
+#define colour(C1,C2)   printf("\033[%d;%dm",C2,C1)
+
 void movePlayer(struct player *currentPlayer,int OldLocationID,int NewLocationID)
 {
     int mapXY[40][2]={{ 9,36},{ 9,33},{ 9,30},{ 9,27},{ 9,24},{ 9,21},{ 9,18},{ 9,15},{ 9,12},{ 9, 9},\
