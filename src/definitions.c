@@ -115,6 +115,7 @@ void movePlayer(struct player *currentPlayer,int OldLocationID,int NewLocationID
     move(mapXY[NewLocationID][0]+(playerID)%4,mapXY[NewLocationID][1]+(playerID)/4);
     printf("o");
     changeTextColour(RESET);
+    move(1,42);
 }
 
 void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
