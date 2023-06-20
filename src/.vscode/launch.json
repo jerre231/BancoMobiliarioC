@@ -5,8 +5,8 @@
             "name": "(lldb) Iniciar",
             "type": "cppdbg",
             "request": "launch",
-            "program": "insira o nome do programa, por exemplo ${workspaceFolder}/a.out",
-            "args": [],
+            "program": "insira o nome do programa, por exemplo ${workspaceFolder}/game.c", "/Users/jvpvizeu/Desktop/BancoImobiliarioC/src/game.dSYM"
+            "args": ["-lncurses"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

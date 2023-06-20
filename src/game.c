@@ -1,5 +1,5 @@
-// lembre de compilar o programa antes com: gcc game.c -o game -lncurses
-#include "houses.c"
+
+#include "board.c"
 
 bool running = true; //o while do jogo começa rodando por enquanto
 
@@ -11,19 +11,6 @@ int rollDice(){
     return dice;
 }
 
-void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
-{
-    for (int i = 0; i < tamanho - 1; ++i) {
-        for (int j = i + 1; j < tamanho; ++j) {
-            if (vetor[i] > vetor[j]) {
-                int temp = vetor[i];
-                vetor[i] = vetor[j];
-                vetor[j] = temp;
-            }
-        }
-    }
-}
-
 /*void position(int x, int y) //função para definir a posição de algum print no terminal, deve ser escrito: position("coordenada de x", "coordenada de y");
 {                           //[gotoXY!]
     COORD c;                //precisa do #include <windows.h>
@@ -31,57 +18,9 @@ void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma 
     c.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }*/
-    
-int clearScreen(){
-    system("clear || cls");
-}
-int printTable(){
-    clearScreen();
-    restoreConsole();
-    printf("\n");
-    printf("\n                ST.CH  ELCT  STATES VRGNIA PNSLVA  ST.JA   COM    TEN    NY    FREE         ");
-    printf("\n                 AVE   COMP    AVE    AVE   RAIL    AVE   CHEST   AVE   AVE    PARK         ");
-    printf("\n        ____________________________________________________________________________        ");
-    printf("\n VISIT |      |      |      |      |      |      |      |      |      |      |      |       ");
-    printf("\n  JAIL |      |      |      |      |      |      |      |      |      |      |      |       ");
-    printf("\n       |______|______|______|______|______|______|______|______|______|______|______|       ");
-    printf("\n CNNCT |      |                                                              |      | KNTCY ");
-    printf("\n  AVE  |      |                                                              |      |  AVE  ");
-    printf("\n       |______|                                                              |______|       ");
-    printf("\n VERMNT|      |                                                              |      |       ");
-    printf("\n  AVE  |      |                                                              |      |CHANCE ");
-    printf("\n       |______|                                                              |______|       ");
-    printf("\n       |      |                                                              |      |  IND  ");
-    printf("\n CHANCE|      |                                                              |      |  AVE  ");
-    printf("\n       |______|                                                              |______|       ");
-    printf("\n ORNTL |      |                                                              |      |  ILL  ");
-    printf("\n  AVE  |      |                                                              |      |  AVE  ");
-    printf("\n       |______|                                                              |______|       ");
-    printf("\n  READ |      |                                                              |      | B&O.  ");
-    printf("\n  RAIL |      |                                                              |      | RAIL  ");
-    printf("\n       |______|                                                              |______|       ");
-    printf("\n       |      |                                                              |      |ATLNTC ");
-    printf("\n  TAX  |      |                                                              |      |  AVE  ");
-    printf("\n       |______|                                                              |______|       ");
-    printf("\n BALTIC|      |                                                              |      | VNTNR ");
-    printf("\n  AVE  |      |                                                              |      |  AVE  ");
-    printf("\n       |______|                                                              |______|       ");
-    printf("\n  COM  |      |                                                              |      | WATER ");
-    printf("\n CHEST |      |                                                              |      | WORKS ");
-    printf("\n       |______|                                                              |______|       ");
-    printf("\n MEDTRN|      |                                                              |      | MRVN  ");
-    printf("\n  AVE  |      |                                                              |      | GRDNS ");
-    printf("\n       |______|______________________________________________________________|______|       ");
-    printf("\n       |      |      |      |      |      |      |      |      |      |      |      | GO TO ");
-    printf("\n START |      |      |      |      |      |      |      |      |      |      |      |  JAIL ");
-    printf("\n       |______|______|______|______|______|______|______|______|______|______|______|       ");
-    printf("\n                BRDWK LUXURY  PARK  CHANCE  SHORT PNSLVA   COM    NC    PCFC                ");
-    printf("\n                       TAX    PLACE         LINE    AVE   CHEST   AVE   AVE                 ");
-}
 
+// int main
 int main(){
-
-initscr();
 // TODO: Menu Principal aqui <--
 
 declarePlayers(players, playerCount, Nomes);
@@ -103,6 +42,7 @@ while(running){ //while do jogo em si
     if(!(currentPlayer->prisao == 1)){
         int rollIsOver = 0;
         int housesToWalk = 0;
+        int *oldLocation;
         while(!rollIsOver){
             int roll1 = rollDice();
             int roll2 = rollDice();
@@ -115,13 +55,15 @@ while(running){ //while do jogo em si
                 printf("%s rolou números iguais para andar, rola de novo!\n", currentPlayer->nome);
             }
         }
+        oldLocation = currentPlayer->pos;
         currentPlayer->pos += housesToWalk;
         if(currentPlayer->pos >= 40){
             currentPlayer->pos -= 40;
         }
+        movePlayer(currentPlayer, oldLocation, currentPlayer->pos);
     }
-    currentHouse = &houses[currentPlayer->pos];
-    int opcao; // variável auxiliar em que será armazenada a opcao do jogador
+    currentHouse = &houses[currentPlayer->pos]; // variável auxiliar em que será armazenada a opcao do jogador
+    int opcao; 
     switch (currentHouse->type) {
         case HOUSE_STD:
         printf("Você caiu na casa %s, ", currentHouse->name);
@@ -132,6 +74,7 @@ while(running){ //while do jogo em si
         } else {
             printf("ela não é possuída por ninguém.\n%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
             printf("1 - SIM\n2 - NAO\n");
+            sleep(5);
             scanf("%d", &opcao);
             if(opcao == '1'){
                 currentPlayer->money -= currentHouse->cost;
@@ -179,6 +122,5 @@ while(running){ //while do jogo em si
         break;
     }
 }
-endwin();
 return 0;
 }
