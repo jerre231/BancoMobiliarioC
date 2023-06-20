@@ -7,7 +7,7 @@ int turnos = 0;
     //quantidade de turnos total, turno atual de qual jogador
 
 int rollDice(){
-    int dice = (arc4random()%6)+1;
+    int dice = (rand()%6)+1;
     return dice;
 }
 
@@ -21,6 +21,7 @@ int rollDice(){
 
 // int main
 int main(){
+srand((unsigned)TIME(NULL));
 // TODO: Menu Principal aqui <--
 
 declarePlayers(players, playerCount, Nomes);
