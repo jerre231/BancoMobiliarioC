@@ -43,7 +43,7 @@ while(running){ //while do jogo em si
     if(!(currentPlayer->prisao == 1)){
         int rollIsOver = 0;
         int housesToWalk = 0;
-        int *oldLocation;
+        int oldLocation;
         while(!rollIsOver){
             int roll1 = rollDice();
             int roll2 = rollDice();
