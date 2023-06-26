@@ -1,4 +1,3 @@
-
 #include "board.c"
 
 bool running = true; //o while do jogo começa rodando por enquanto
@@ -10,14 +9,6 @@ int rollDice(){
     int dice = (rand()%6)+1;
     return dice;
 }
-
-/*void position(int x, int y) //função para definir a posição de algum print no terminal, deve ser escrito: position("coordenada de x", "coordenada de y");
-{                           //[gotoXY!]
-    COORD c;                //precisa do #include <windows.h>
-    c.X = x;
-    c.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
-}*/
 
 // int main
 int main(){
@@ -39,6 +30,7 @@ int turnoPlayer = 0; // TODO: Configurar essa variável com o sistema de turnos
 
 while(running){ //while do jogo em si
     // TODO: adicionar if, caso o jogador esteja na prisão
+    cleanTextScreen();
     currentPlayer = &players[turnoPlayer];
     if(!(currentPlayer->prisao == 1)){
         int rollIsOver = 0;
@@ -75,7 +67,6 @@ while(running){ //while do jogo em si
         } else {
             printf("ela não é possuída por ninguém.\n%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
             printf("1 - SIM\n2 - NAO\n");
-            sleep(5);
             scanf("%d", &opcao);
             if(opcao == '1'){
                 currentPlayer->money -= currentHouse->cost;
@@ -84,6 +75,7 @@ while(running){ //while do jogo em si
                 printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
             }
         }
+        
         break;
 
         case HOUSE_CMP:
@@ -103,7 +95,6 @@ while(running){ //while do jogo em si
                 printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
             }
         }
-
         break;
 
         case GO_TO_JAIL:
@@ -121,7 +112,10 @@ while(running){ //while do jogo em si
         printf("Você vai retirar uma carta aleatória!");
         // TODO: adicionar sistema de carta sorte ou reves
         break;
+        
     }
+    printf("Pressione qualquer botão para continuar... \n");
+    scanf();
 }
 return 0;
 }
