@@ -91,13 +91,6 @@ void moveCursorLeft(int X) {
 /* int getCursorPosition() {
     printf("\x1b[s");
 } */
-void writeSomethingSomewhereAndReturn(int X, int Y) {
-    printf("\x1b 7");
-    moveCursorUp(Y);
-    moveCursorRight(X);
-    printf("o");
-    printf("\x1b 8");
-}
 
 #define move(X,Y)  printf("%c[%d;%df",0x1B,Y,X)
 #define colour(C1,C2)   printf("\033[%d;%dm",C2,C1)
@@ -116,6 +109,34 @@ void movePlayer(struct player *currentPlayer,int OldLocationID,int NewLocationID
     printf("o");
     changeTextColour(RESET);
     move(1,42);
+}
+
+void cleanTextScreen() {
+    move(1,42);
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
+    printf("\n                                                                                               ");
 }
 
 void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
