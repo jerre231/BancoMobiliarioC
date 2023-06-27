@@ -69,6 +69,7 @@ int maingame() {
             int oldLocation;
             while(!rollIsOver)
             {
+                ClearRightScreen(4);
                 int roll1 = rollDice();
                 int roll2 = rollDice();
                 move(95,5); printf("%s rolou %d e %d para andar!\n", currentPlayer->nome, roll1, roll2);
@@ -78,7 +79,7 @@ int maingame() {
                 {
                     move(95,6); printf("%s rolou números iguais para andar, rola de novo!\n", currentPlayer->nome);
                     move(95,7); printf("Pressione qualquer botão para continuar... \n");
-                    getch("");
+                    move(95,8); getch("");
                 }
             }
 
@@ -103,10 +104,10 @@ int maingame() {
             } 
             else 
             {
-                move(95,7); printf("ela não é possuída por ninguém.\n", currentPlayer->nome);
-                move(95,8); printf("%s deseja comprar essa propriedade por %i?\n", currentHouse->cost);
-                move(95,9); printf("1 - SIM"); move(95,10); printf("n2 - NAO");
-                scanf("%d", &opcao);
+                move(95,7); printf("ela não é possuída por ninguém.\n");
+                move(95,8); printf("%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
+                move(95,9); printf("1 - SIM"); move(95,10); printf("2 - NAO");
+                move(95,11); char opcao = getch("");
                 if(opcao == '1')
                 {
                     currentPlayer->money -= currentHouse->cost;
@@ -128,10 +129,10 @@ int maingame() {
             } 
             else 
             {
-                move(95,7); printf("ela não é possuída por ninguém.\n", currentPlayer->nome);
-                move(95,8); printf("%s deseja comprar essa propriedade por %i?\n", currentHouse->cost);
-                move(95,9); printf("1 - SIM"); move(95,10); printf("n2 - NAO");
-                scanf("%d", &opcao);
+                move(95,7); printf("ela não é possuída por ninguém.\n");
+                move(95,8); printf("%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
+                move(95,9); printf("1 - SIM"); move(95,10); printf("2 - NAO");
+                move(95,11); char opcao = getch("");
                 if(opcao == '1')
                 {
                     currentPlayer->money -= currentHouse->cost;
@@ -143,24 +144,25 @@ int maingame() {
             }
 
             case GO_TO_JAIL:
-            printf("Opa! Você está preso!");
+            move(95,5); printf("Opa! Você está preso!");
             currentPlayer->prisao = TRUE;
             currentPlayer->turnosPrisao = 3;
             // TODO: adicionar sistema de prisao
             break;
 
             case FREE_DAY:
-            printf("Você recebeu um dia de folga! Fique um turno sem jogar.");
+            move(95,5); printf("Você recebeu um dia de folga! Fique um turno sem jogar.");
             break;
 
             case SORTE_OU_REVES:
-            printf("Você vai retirar uma carta aleatória!");
+            move(95,5); printf("Você vai retirar uma carta aleatória!");
             // TODO: adicionar sistema de carta sorte ou reves
             break;
             
         }
-        printf("Pressione qualquer botão para continuar... \n");
-        getch("");
+        move(95,15); printf("Seu turno acabou!");
+        move(95,16); printf("Pressione qualquer botão para continuar... \n");
+        move(95,17); getch("");
     }
     return EXIT_SUCCESS;
 }
