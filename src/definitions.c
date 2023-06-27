@@ -3,13 +3,38 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
-#include <unistd.h>
+
+#ifdef __linux__
+//funcao do linux para setar o tamanho do terminal
+void setTerminalSize() {
+
+}
+enum falseoutrue {FALSE, TRUE};
+#elif _WIN32
+//funcao do windows para setar o tamanho do terminal
+#include <windows.h>
+void checkWindowSize(int screenWidth, int screenHeight)
+    {
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        int width, height;  
+        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+        width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+        height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;  
+        if (width < screenWidth || height < screenHeight)
+        {
+            printf("\nTerminal size is too small. Please resize terminal.");
+            printf("\nSuggested size: %d X %d", screenWidth, screenHeight);
+            printf("\nCurrent size  : %d X %d", width, height);
+            printf("\n\n");
+            exit(1);
+        }
+    }
+
+#endif
 
 enum colours  {RESET,INCREASED_INTENSITY,BLACK=30,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE,\
                RED_BG=41,GREEN_BG,YELLOW_BG,BLUE_BG,PURPLE_BG,CYAN_BG,WHITE_BG,\
                LIGHTBLACK_BG=100,LIGHTRED_BG,LIGHTGREEN_BG,LIGHTYELLOW_BG,LIGHTBLUE_BG,LIGHTPURPLE_BG,LIGHTCYAN_BG,PUREWHITE_BG};
-
-enum falseoutrue {FALSE, TRUE};
 
 char Nomes[][20] = {"Nome1","Nome2","Nome3","Nome4"};// TODO: Leitura de nomes, nomes exemplo temporarios
 
@@ -18,6 +43,10 @@ int playerCount = 4; // TODO: criar uma função aqui depois que o menu principa
 int housesCount = 40;
 
 int startingMoney = 200; //Dinheiro Inicial dos players, TODO: pode ser ajustado?
+
+int SCREENSIZE_X = 172;
+
+int SCREENSIZE_Y = 40;
 
 struct player{ //Definindo a as variáveis de cada jogador
         int ID;
@@ -139,6 +168,17 @@ void cleanTextScreen() {
     printf("\n                                                                                               ");
 }
 
+int ClearRightScreen(int startLine)
+{
+    for (int i=startLine;i<SCREENSIZE_Y;i++)
+    {
+        move(95,i);
+        for(int j=0;j<(SCREENSIZE_X-95);j++)
+            printf(" ");
+    }
+    return EXIT_SUCCESS;
+}
+
 void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
 {
     for (int i = 0; i < tamanho - 1; ++i) {
@@ -150,4 +190,26 @@ void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma 
             }
         }
     }
+}
+
+void printPlayerInfo(struct player *currentPlayer)
+{
+    ClearRightScreen(0);
+    move(95,3);         
+    printf("PLAYER: ");
+    changeTextColour(currentPlayer->colour);
+    printf("%s ",currentPlayer->nome);
+    changeTextColour(RESET);
+    printf("CASH IN HAND: $%d NET WORTH: $%d");
+}
+
+int BuyAndSellHousesMenu(struct player *currentPlayer)
+{
+
+    return EXIT_SUCCESS;
+}
+
+void showPlayerProperties(struct player *currentPlayer)
+{
+    
 }
