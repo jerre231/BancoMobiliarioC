@@ -117,9 +117,6 @@ void moveCursorRight(int X) {
 void moveCursorLeft(int X) {
     printf("\x1b[%dD",X);
 }
-/* int getCursorPosition() {
-    printf("\x1b[s");
-} */
 
 #define move(X,Y)  printf("%c[%d;%df",0x1B,Y,X)
 #define colour(C1,C2)   printf("\033[%d;%dm",C2,C1)
@@ -137,7 +134,7 @@ void movePlayer(struct player *currentPlayer,int OldLocationID,int NewLocationID
     move(mapXY[NewLocationID][0]+(playerID)%4,mapXY[NewLocationID][1]+(playerID)/4);
     printf("o");
     changeTextColour(RESET);
-    move(1,42);
+    move(95,5);
 }
 
 void cleanTextScreen() {
@@ -211,5 +208,5 @@ int BuyAndSellHousesMenu(struct player *currentPlayer)
 
 void showPlayerProperties(struct player *currentPlayer)
 {
-    
+
 }

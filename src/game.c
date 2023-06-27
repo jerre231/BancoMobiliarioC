@@ -11,7 +11,17 @@ int rollDice(){
 }
 
 // int main
-int main(){  
+int main(){
+    clearScreen();
+    printf("\n                                              888b     d888  .d88888b.  888b    888  .d88888b.  8888888b.   .d88888b.  888    Y88b   d88P           "); 
+    printf("\n                                              8888b   d8888 d88P\" \"Y88b 8888b   888 d88P\" \"Y88b 888   Y88b d88P\" \"Y88b 888     Y88b d88P      ");       
+    printf("\n                                              88888b.d88888 888     888 88888b  888 888     888 888    888 888     888 888      Y88o88P             "); 
+    printf("\n                                              888Y88888P888 888     888 888Y88b 888 888     888 888   d88P 888     888 888       Y888P              "); 
+    printf("\n                                              888 Y888P 888 888     888 888 Y88b888 888     888 8888888P\"  888     888 888        888              ");  
+    printf("\n                                              888  Y8P  888 888     888 888  Y88888 888     888 888        888     888 888        888               "); 
+    printf("\n                                              888   \"   888 Y88b. .d88P 888   Y8888 Y88b. .d88P 888        Y88b. .d88P 888        888              ");  
+    printf("\n                                              888       888  \"Y88888P\"  888    Y888  \"Y88888P\"  888         \"Y88888P\"  88888888   888         ");       
+    printf("\n\n\n\n\n");
     srand((unsigned)time(NULL));
     printf("MAIN MENU \n");
     checkWindowSize(172, 40);
@@ -49,7 +59,7 @@ int maingame() {
 
     while(running){ //while do jogo em si
         // TODO: adicionar if, caso o jogador esteja na prisão
-        cleanTextScreen();
+        ClearRightScreen(0);
         currentPlayer = &players[turnoPlayer];
         printPlayerInfo(currentPlayer);
         if(!(currentPlayer->prisao == 1))
@@ -61,13 +71,14 @@ int maingame() {
             {
                 int roll1 = rollDice();
                 int roll2 = rollDice();
-                move(1,40);
-                printf("%s rolou %d e %d para andar!\n", currentPlayer->nome, roll1, roll2);
+                move(95,5); printf("%s rolou %d e %d para andar!\n", currentPlayer->nome, roll1, roll2);
                 housesToWalk += (roll1 + roll2);
-                if(roll1 != roll2){
-                    rollIsOver = 1;
-                } else {
-                    printf("%s rolou números iguais para andar, rola de novo!\n", currentPlayer->nome);
+                if(roll1 != roll2){rollIsOver = 1;} 
+                else
+                {
+                    move(95,6); printf("%s rolou números iguais para andar, rola de novo!\n", currentPlayer->nome);
+                    move(95,7); printf("Pressione qualquer botão para continuar... \n");
+                    getch("");
                 }
             }
 
@@ -75,7 +86,7 @@ int maingame() {
             currentPlayer->pos += housesToWalk;
 
             if(currentPlayer->pos >= 40){currentPlayer->pos -= 40;}
-            
+
             movePlayer(currentPlayer, oldLocation, currentPlayer->pos);
         }
         currentHouse = &houses[currentPlayer->pos]; // variável auxiliar em que será armazenada a opcao do jogador
@@ -83,50 +94,53 @@ int maingame() {
         switch (currentHouse->type)
         {
             case HOUSE_STD:
-            printf("Você caiu na casa %s, ", currentHouse->name);
+            move(95,6); printf("Você caiu na casa %s, ", currentHouse->name);
             if(currentHouse->isOwnedBySomeone)
             {
-                printf("ela é possuída por %s.\n", players[currentHouse->ownerID].nome);
-                printf("Você deve pagar %d$ ao proprietário.\n", currentHouse->rent);
+                move(95,7); printf("ela é possuída por %s.\n", players[currentHouse->ownerID].nome);
+                move(95,8); printf("Você deve pagar %d$ ao proprietário.\n", currentHouse->rent);
                 // TODO: adicionar o sistema de pagar aluguel
             } 
             else 
             {
-                printf("ela não é possuída por ninguém.\n%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
-                printf("1 - SIM\n2 - NAO\n");
+                move(95,7); printf("ela não é possuída por ninguém.\n", currentPlayer->nome);
+                move(95,8); printf("%s deseja comprar essa propriedade por %i?\n", currentHouse->cost);
+                move(95,9); printf("1 - SIM"); move(95,10); printf("n2 - NAO");
                 scanf("%d", &opcao);
                 if(opcao == '1')
                 {
                     currentPlayer->money -= currentHouse->cost;
                     currentHouse->isOwnedBySomeone = TRUE;
                     currentHouse->ownerID = currentPlayer->ID;
-                    printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
+                    ClearRightScreen(4);
+                    move(95,5); printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
                 }
             }
-            
             break;
 
             case HOUSE_CMP:
-            printf("Você caiu na casa %s, ", currentHouse->name);
+            move(95,6); printf("Você caiu na casa %s, ", currentHouse->name);
             if(currentHouse->isOwnedBySomeone)
             {
-                printf("ela é possuída por %s.\n", players[currentHouse->ownerID].nome);
-                printf("Você deve pagar %d$ ao proprietário.\n", currentHouse->rent);
+                move(95,7); printf("ela é possuída por %s.\n", players[currentHouse->ownerID].nome);
+                move(95,8); printf("Você deve pagar %d$ ao proprietário.\n", currentHouse->rent);
                 // TODO: adicionar o sistema de pagar aluguel
             } 
             else 
             {
-                printf("ela não é possuída por ninguém.\n%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
-                printf("1 - SIM\n2 - NAO");
+                move(95,7); printf("ela não é possuída por ninguém.\n", currentPlayer->nome);
+                move(95,8); printf("%s deseja comprar essa propriedade por %i?\n", currentHouse->cost);
+                move(95,9); printf("1 - SIM"); move(95,10); printf("n2 - NAO");
                 scanf("%d", &opcao);
-                if(opcao == '1'){
+                if(opcao == '1')
+                {
                     currentPlayer->money -= currentHouse->cost;
                     currentHouse->isOwnedBySomeone = TRUE;
                     currentHouse->ownerID = currentPlayer->ID;
-                    printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
+                    ClearRightScreen(4);
+                    move(95,5); printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
                 }
             }
-            break;
 
             case GO_TO_JAIL:
             printf("Opa! Você está preso!");
@@ -146,7 +160,7 @@ int maingame() {
             
         }
         printf("Pressione qualquer botão para continuar... \n");
-        scanf("");
+        getch("");
     }
     return EXIT_SUCCESS;
 }
