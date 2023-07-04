@@ -27,7 +27,7 @@ int main(){
     checkWindowSize(172, 40);
     printf("1- Novo Jogo \n");
     choice_mainmenu: ;
-    char choice = getch("");
+    char choice = getchar();
     if (choice == '1') 
     {
         if(maingame()!= EXIT_SUCCESS)
@@ -42,15 +42,16 @@ int main(){
     }
 }
 
-int maingame() {
+int maingame() //loop do jogo
+{    
 
-    declarePlayers(players, playerCount, Nomes);
-
+    declarePlayers(players, playerCount, Nomes);    //iniciando variáveis
     declareHouses(houses);
 
-    printTable();
+    printTable();   //printando o tabuleiro, que fica fixo
 
-    for(int i=0; i<playerCount; i++){
+    for(int i=0; i<playerCount; i++)    //colocando os players na casa do início
+    {
         currentPlayer = &players[i];
         movePlayer(currentPlayer, 0, 0);
     }
@@ -62,11 +63,15 @@ int maingame() {
         ClearRightScreen(0);
         currentPlayer = &players[turnoPlayer];
         printPlayerInfo(currentPlayer);
+
+        int housesToWalk;
+
         if(!(currentPlayer->prisao == 1))
         {
             int rollIsOver = 0;
-            int housesToWalk = 0;
             int oldLocation;
+            housesToWalk = 0;
+
             while(!rollIsOver)
             {
                 ClearRightScreen(4);
@@ -79,7 +84,7 @@ int maingame() {
                 {
                     move(95,6); printf("%s rolou números iguais para andar, rola de novo!\n", currentPlayer->nome);
                     move(95,7); printf("Pressione qualquer botão para continuar... \n");
-                    move(95,8); getch("");
+                    move(95,8); getchar();
                 }
             }
 
@@ -90,8 +95,8 @@ int maingame() {
 
             movePlayer(currentPlayer, oldLocation, currentPlayer->pos);
         }
-        currentHouse = &houses[currentPlayer->pos]; // variável auxiliar em que será armazenada a opcao do jogador
-        int opcao; 
+        currentHouse = &houses[currentPlayer->pos]; 
+        int opcao; // variável auxiliar em que será armazenada a opcao do jogador
         switch (currentHouse->type)
         {
             case HOUSE_STD:
@@ -101,18 +106,37 @@ int maingame() {
                 move(95,7); printf("ela é possuída por %s.\n", players[currentHouse->ownerID].nome);
                 move(95,8); printf("Você deve pagar %d$ ao proprietário.\n", currentHouse->rent);
                 // TODO: adicionar o sistema de pagar aluguel
+                if(currentPlayer->netWorth < currentHouse->rent) { // Falencia!
+                    move(95,9); printf("O jogador %s nao tem como pagar o aluguel!.", currentPlayer->nome);
+                    move(95,10); playerLosed(currentPlayer);
+                    break; // TODO: TESTAR!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                } 
+                else if(currentPlayer->money < currentHouse->rent) {
+                    while(!(currentPlayer->money >= currentHouse->rent)){    // TODO: TESTAR!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        move(95,9); printf("Voce precisa vender algumas coisas para conseguir pagar o aluguel");
+                        move(95,10); printf("Vamos abrir o menu de compra e venda para voce.");
+                        move(95,11); getc("Aperte qualquer botao para continuar");
+                        move(95,12); getc("");
+                        if((BuyAndSellHousesMenu(currentPlayer, houses))!= EXIT_SUCCESS) {
+                            clearRightScreen(0);
+                            move(95,0); printf("error in BuyAndSellHousesMenu"); }
+                        showPlayerInfo();
+                    }
+                }
+                currentPlayer->money -= currentHouse->rent;
             } 
             else 
             {
                 move(95,7); printf("ela não é possuída por ninguém.\n");
                 move(95,8); printf("%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
                 move(95,9); printf("1 - SIM"); move(95,10); printf("2 - NAO");
-                move(95,11); char opcao = getch("");
+                move(95,11); char opcao = getchar();
                 if(opcao == '1')
                 {
                     currentPlayer->money -= currentHouse->cost;
                     currentHouse->isOwnedBySomeone = TRUE;
                     currentHouse->ownerID = currentPlayer->ID;
+                    addPropertieToPlayer(currentPlayer, houses, currentHouse->ID);
                     ClearRightScreen(4);
                     move(95,5); printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
                 }
@@ -124,24 +148,48 @@ int maingame() {
             if(currentHouse->isOwnedBySomeone)
             {
                 move(95,7); printf("ela é possuída por %s.\n", players[currentHouse->ownerID].nome);
-                move(95,8); printf("Você deve pagar %d$ ao proprietário.\n", currentHouse->rent);
+                move(95,8); printf("Você deve pagar %d$ ao proprietário.\n", housesToWalk*(currentHouse->rent));
                 // TODO: adicionar o sistema de pagar aluguel
+                if(currentPlayer->netWorth < housesToWalk*(currentHouse->rent)) { // Falencia!
+                    move(95,9); printf("O jogador %s nao tem como pagar o aluguel!.", currentPlayer->nome);
+                    move(95,10); playerLosed(currentPlayer);
+                    break; // TODO: TESTAR!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                } 
+                else if(currentPlayer->money < housesToWalk*(currentHouse->rent)) {
+                    while(!(currentPlayer->money >= housesToWalk*(currentHouse->rent))){    // TODO: TESTAR!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        move(95,9); printf("Voce precisa vender algumas coisas para conseguir pagar o aluguel");
+                        move(95,10); printf("Vamos abrir o menu de compra e venda para voce.");
+                        move(95,11); getc("Aperte qualquer botao para continuar");
+                        move(95,12); getc("");
+                        if((BuyAndSellHousesMenu(currentPlayer, houses))!= EXIT_SUCCESS) {
+                            clearRightScreen(0);
+                            move(95,0); printf("error in BuyAndSellHousesMenu"); }
+                        showPlayerInfo();
+                    }
+                }
+                currentPlayer->money -= housesToWalk*(currentHouse->rent);
             } 
             else 
             {
                 move(95,7); printf("ela não é possuída por ninguém.\n");
                 move(95,8); printf("%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
-                move(95,9); printf("1 - SIM"); move(95,10); printf("2 - NAO");
-                move(95,11); char opcao = getch("");
+                move(95,9); printf("1 - SIM"); move(95,10); printf("2 - NAO"); move(95,11); printf("3 - COMPRAR E VENDER CASAS");
+                move(95,11); char opcao = getchar();
                 if(opcao == '1')
                 {
                     currentPlayer->money -= currentHouse->cost;
                     currentHouse->isOwnedBySomeone = TRUE;
                     currentHouse->ownerID = currentPlayer->ID;
+                    addPropertieToPlayer(currentPlayer, houses, currentHouse->ID);
                     ClearRightScreen(4);
                     move(95,5); printf("Você adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
+                } 
+                else if(opcao == '2') 
+                {
+                    
                 }
             }
+            break;
 
             case GO_TO_JAIL:
             move(95,5); printf("Opa! Você está preso!");
@@ -162,7 +210,7 @@ int maingame() {
         }
         move(95,15); printf("Seu turno acabou!");
         move(95,16); printf("Pressione qualquer botão para continuar... \n");
-        move(95,17); getch("");
+        move(95,17); getchar();
     }
     return EXIT_SUCCESS;
 }
