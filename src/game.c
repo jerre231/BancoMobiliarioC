@@ -1,4 +1,4 @@
-#include "board.c"
+#include "player.c"
 
 bool running = true; //o while do jogo começa rodando por enquanto
 
@@ -10,41 +10,8 @@ int rollDice(){
     return dice;
 }
 
-// int main
-int main(){
-    clearScreen();
-    printf("\n                                              888b     d888  .d88888b.  888b    888  .d88888b.  8888888b.   .d88888b.  888    Y88b   d88P           "); 
-    printf("\n                                              8888b   d8888 d88P\" \"Y88b 8888b   888 d88P\" \"Y88b 888   Y88b d88P\" \"Y88b 888     Y88b d88P      ");       
-    printf("\n                                              88888b.d88888 888     888 88888b  888 888     888 888    888 888     888 888      Y88o88P             "); 
-    printf("\n                                              888Y88888P888 888     888 888Y88b 888 888     888 888   d88P 888     888 888       Y888P              "); 
-    printf("\n                                              888 Y888P 888 888     888 888 Y88b888 888     888 8888888P\"  888     888 888        888              ");  
-    printf("\n                                              888  Y8P  888 888     888 888  Y88888 888     888 888        888     888 888        888               "); 
-    printf("\n                                              888   \"   888 Y88b. .d88P 888   Y8888 Y88b. .d88P 888        Y88b. .d88P 888        888              ");  
-    printf("\n                                              888       888  \"Y88888P\"  888    Y888  \"Y88888P\"  888         \"Y88888P\"  88888888   888         ");       
-    printf("\n\n\n\n\n");
-    srand((unsigned)time(NULL));
-    printf("MAIN MENU \n");
-    checkWindowSize(172, 40);
-    printf("1- Novo Jogo \n");
-    choice_mainmenu: ;
-    char choice = getchar();
-    if (choice == '1') 
-    {
-        if(maingame()!= EXIT_SUCCESS)
-        {
-            printf("Error in maingame");
-        }
-    }
-    else
-    {
-        printf("Opcao invalida! Por favor tente novamente.");
-        goto choice_mainmenu;
-    }
-}
-
 int maingame() //loop do jogo
 {    
-
     declarePlayers(players, playerCount, Nomes);    //iniciando variáveis
     declareHouses(houses);
 
@@ -95,8 +62,7 @@ int maingame() //loop do jogo
 
             movePlayer(currentPlayer, oldLocation, currentPlayer->pos);
         }
-        currentHouse = &houses[currentPlayer->pos]; 
-        int opcao; // variável auxiliar em que será armazenada a opcao do jogador
+        currentHouse = &houses[currentPlayer->pos];
         switch (currentHouse->type)
         {
             case HOUSE_STD:
@@ -115,12 +81,12 @@ int maingame() //loop do jogo
                     while(!(currentPlayer->money >= currentHouse->rent)){    // TODO: TESTAR!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         move(95,9); printf("Voce precisa vender algumas coisas para conseguir pagar o aluguel");
                         move(95,10); printf("Vamos abrir o menu de compra e venda para voce.");
-                        move(95,11); getc("Aperte qualquer botao para continuar");
-                        move(95,12); getc("");
+                        move(95,11); printf("Aperte qualquer botao para continuar");
+                        move(95,12); getchar();
                         if((BuyAndSellHousesMenu(currentPlayer, houses))!= EXIT_SUCCESS) {
-                            clearRightScreen(0);
+                            ClearRightScreen(0);
                             move(95,0); printf("error in BuyAndSellHousesMenu"); }
-                        showPlayerInfo();
+                        printPlayerInfo(currentPlayer);
                     }
                 }
                 currentPlayer->money -= currentHouse->rent;
@@ -159,12 +125,12 @@ int maingame() //loop do jogo
                     while(!(currentPlayer->money >= housesToWalk*(currentHouse->rent))){    // TODO: TESTAR!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         move(95,9); printf("Voce precisa vender algumas coisas para conseguir pagar o aluguel");
                         move(95,10); printf("Vamos abrir o menu de compra e venda para voce.");
-                        move(95,11); getc("Aperte qualquer botao para continuar");
-                        move(95,12); getc("");
+                        move(95,11); printf("Aperte qualquer botao para continuar");
+                        move(95,12); getchar();
                         if((BuyAndSellHousesMenu(currentPlayer, houses))!= EXIT_SUCCESS) {
-                            clearRightScreen(0);
+                            ClearRightScreen(0);
                             move(95,0); printf("error in BuyAndSellHousesMenu"); }
-                        showPlayerInfo();
+                        printPlayerInfo(currentPlayer);
                     }
                 }
                 currentPlayer->money -= housesToWalk*(currentHouse->rent);
@@ -213,4 +179,36 @@ int maingame() //loop do jogo
         move(95,17); getchar();
     }
     return EXIT_SUCCESS;
+}
+
+// int main
+int main(){
+    clearScreen();
+    printf("\n                                              888b     d888  .d88888b.  888b    888  .d88888b.  8888888b.   .d88888b.  888    Y88b   d88P           "); 
+    printf("\n                                              8888b   d8888 d88P\" \"Y88b 8888b   888 d88P\" \"Y88b 888   Y88b d88P\" \"Y88b 888     Y88b d88P      ");       
+    printf("\n                                              88888b.d88888 888     888 88888b  888 888     888 888    888 888     888 888      Y88o88P             "); 
+    printf("\n                                              888Y88888P888 888     888 888Y88b 888 888     888 888   d88P 888     888 888       Y888P              "); 
+    printf("\n                                              888 Y888P 888 888     888 888 Y88b888 888     888 8888888P\"  888     888 888        888              ");  
+    printf("\n                                              888  Y8P  888 888     888 888  Y88888 888     888 888        888     888 888        888               "); 
+    printf("\n                                              888   \"   888 Y88b. .d88P 888   Y8888 Y88b. .d88P 888        Y88b. .d88P 888        888              ");  
+    printf("\n                                              888       888  \"Y88888P\"  888    Y888  \"Y88888P\"  888         \"Y88888P\"  88888888   888         ");       
+    printf("\n\n\n\n\n");
+    srand((unsigned)time(NULL));
+    printf("MAIN MENU \n");
+    //checkWindowSize(172, 40);     // TODO: RESOLVER ISSO AQUI DE ALGUM JEITO
+    printf("1- Novo Jogo \n");
+    choice_mainmenu: ;
+    char choice = getchar();
+    if (choice == '1') 
+    {
+        if(maingame()!= EXIT_SUCCESS)
+        {
+            printf("Error in maingame");
+        }
+    }
+    else
+    {
+        printf("Opcao invalida! Por favor tente novamente.");
+        goto choice_mainmenu;
+    }
 }
