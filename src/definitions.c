@@ -39,9 +39,9 @@ enum colours  {RESET,INCREASED_INTENSITY,BLACK=30,RED,GREEN,YELLOW,BLUE,PURPLE,C
                RED_BG=41,GREEN_BG,YELLOW_BG,BLUE_BG,PURPLE_BG,CYAN_BG,WHITE_BG,\
                LIGHTBLACK_BG=100,LIGHTRED_BG,LIGHTGREEN_BG,LIGHTYELLOW_BG,LIGHTBLUE_BG,LIGHTPURPLE_BG,LIGHTCYAN_BG,PUREWHITE_BG};
 
-char Nomes[][20] = {"Nome1","Nome2","Nome3","Nome4"};
+char Nomes[10][20];
 
-int playerCount = 4;
+int playerCount;
 
 int housesCount = 40;
 
@@ -50,6 +50,32 @@ int startingMoney = 200; //Dinheiro Inicial dos players, TODO: pode ser ajustado
 int SCREENSIZE_X = 172;
 
 int SCREENSIZE_Y = 40;
+
+void BubbleSort(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
+{
+    for (int i = 0; i < tamanho - 1; ++i) {
+        for (int j = i + 1; j < tamanho; ++j) {
+            if (vetor[i] > vetor[j]) {
+                int temp = vetor[i];
+                vetor[i] = vetor[j];
+                vetor[j] = temp;
+            }
+        }
+    }
+}
+
+void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
+{
+    for (int i = 0; i < tamanho - 1; ++i) {
+        for (int j = i + 1; j < tamanho; ++j) {
+            if (vetor[i] < vetor[j]) {
+                int temp = vetor[i];
+                vetor[i] = vetor[j];
+                vetor[j] = temp;
+            }
+        }
+    }
+}
 
 struct player{ //Definindo a as variáveis de cada jogador
         int ID;
@@ -65,41 +91,78 @@ struct player{ //Definindo a as variáveis de cada jogador
         int properties[40];
         int numberofProperties;
     };
-struct player players[4], *currentPlayer;
+struct player players[10], *currentPlayer;
 
-void declarePlayers(struct player player[], int playerCount, char (*Nomes)[20])
-{
-for(int i=0;i<playerCount;i++)
-    {
-    strcpy(player[i].nome,Nomes[i]);
-    player[i].ID = i;
-    player[i].money = player[i].netWorth = startingMoney;
-    player[i].pos = 0;
-    player[i].turno = i;    //TODO: Definir turno aleatório dos players
-    player[i].prisao = player[i].faliu = FALSE;
-    player[i].turnosPrisao = 0;
-    player[i].numberofProperties = 0;
-    switch(i) {
-    case 0:
-        player[i].colour = BLUE;
-        break;
-    case 1:
-        player[i].colour = RED;
-        break;
-    case 2:
-        player[i].colour = GREEN;
-        break;
-    case 3:
-        player[i].colour = YELLOW;
-        break;
-    case 4:
-        player[i].colour = PURPLE;
-        break;
-    case 5:
-        player[i].colour = CYAN;
-        break;
+void declarePlayers(struct player player[]) {
+    printf("Digite o número de jogadores (max: 10):\n.: ");
+    scanf("%i", &playerCount);
+    clearScreen();
+
+    for (int i = 0; i < playerCount; i++) {
+        printf("\nDigite o nome do jogador %d: ", i + 1);
+        scanf(" %s", player[i].nome);
+
+        player[i].ID = i;
+        player[i].money = player[i].netWorth = startingMoney;
+        player[i].pos = 0;
+        player[i].prisao = FALSE;
+        player[i].turnosPrisao = 0;
+
+        switch (i) {
+            case 0:
+                player[i].colour = BLUE;
+                break;
+            case 1:
+                player[i].colour = RED;
+                break;
+            case 2:
+                player[i].colour = GREEN;
+                break;
+            case 3:
+                player[i].colour = YELLOW;
+                break;
+            case 4:
+                player[i].colour = PURPLE;
+                break;
+            case 5:
+                player[i].colour = CYAN;
+                break;
+            default:
+                player[i].colour = CYAN;
+                break;
+        }&players[i];
     }
-}
+
+    int sorte[playerCount];
+    int sorteaux[playerCount];
+    int vetorTurno[playerCount];
+
+    for (int i = 0; i < playerCount; i++) {
+        int rodar;
+        printf("\nDigite 1 para jogar os dados de %s:\n.: ", player[i].nome);
+        scanf("%i", &rodar);
+
+        if (rodar == 1) {
+            int a = rollDice();
+            int b = rollDice();
+            sorte[i] = a + b;
+            sorteaux[i] = a + b;
+            printf("\nOs dados deram %i e %i, total de %i\n", a, b, sorte[i]);
+        }
+    }
+
+    order(sorte, playerCount);
+
+    for (int i = 0; i < playerCount; i++) {
+        for (int j = 0; j < playerCount; j++) {
+            if (sorteaux[i] == sorte[j]) {
+                player[i].turno = j;
+                printf("\n\nO jogador %s está na posição %i\n", player[i].nome, player[i].turno+1);
+                         
+            }
+        }
+    }
+sleep(5);
 }
 
 //ANSI ESCAPE CODE FUNÇOES:
@@ -154,30 +217,4 @@ int ClearRightScreen(int startLine)
             printf(" ");
     }
     return EXIT_SUCCESS;
-}
-
-void BubbleSort(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
-{
-    for (int i = 0; i < tamanho - 1; ++i) {
-        for (int j = i + 1; j < tamanho; ++j) {
-            if (vetor[i] > vetor[j]) {
-                int temp = vetor[i];
-                vetor[i] = vetor[j];
-                vetor[j] = temp;
-            }
-        }
-    }
-}
-
-void order(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
-{
-    for (int i = 0; i < tamanho - 1; ++i) {
-        for (int j = i + 1; j < tamanho; ++j) {
-            if (vetor[i] < vetor[j]) {
-                int temp = vetor[i];
-                vetor[i] = vetor[j];
-                vetor[j] = temp;
-            }
-        }
-    }
 }
