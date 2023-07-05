@@ -39,9 +39,9 @@ enum colours  {RESET,INCREASED_INTENSITY,BLACK=30,RED,GREEN,YELLOW,BLUE,PURPLE,C
                RED_BG=41,GREEN_BG,YELLOW_BG,BLUE_BG,PURPLE_BG,CYAN_BG,WHITE_BG,\
                LIGHTBLACK_BG=100,LIGHTRED_BG,LIGHTGREEN_BG,LIGHTYELLOW_BG,LIGHTBLUE_BG,LIGHTPURPLE_BG,LIGHTCYAN_BG,PUREWHITE_BG};
 
-char Nomes[][20] = {"Nome1","Nome2","Nome3","Nome4"};// TODO: Leitura de nomes, nomes exemplo temporarios
+char Nomes[][20] = {"Nome1","Nome2","Nome3","Nome4"};
 
-int playerCount = 4; // TODO: criar uma função aqui depois que o menu principal for criado
+int playerCount = 4;
 
 int housesCount = 40;
 
