@@ -23,12 +23,18 @@ int maingame() //loop do jogo
         movePlayer(currentPlayer, 0, 0);
     }
 
-    int turnoPlayer = 0; // TODO: Configurar essa variável com o sistema de turnos
+    int playerInic = 0;
 
+    SAIRGAME:
     while(running){ //while do jogo em si
         // TODO: adicionar if, caso o jogador esteja na prisão
         ClearRightScreen(0);
         currentPlayer = &players[turnoPlayer];
+        if(turnos >= playerCount){
+            turnos = 0; }
+        if(currentPlayer->turno != turnos){
+            playerInic++;
+            goto SAIRGAME; }
         printPlayerInfo(currentPlayer);
 
         int housesToWalk;
