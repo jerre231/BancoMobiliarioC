@@ -12,7 +12,7 @@ int rollDice(){
 
 int maingame() //loop do jogo
 {    
-    declarePlayers(players, playerCount, Nomes);    //iniciando variáveis
+    declarePlayers(players);    //iniciando variáveis
     declareHouses(houses);
 
     printTable();   //printando o tabuleiro, que fica fixo
@@ -29,7 +29,7 @@ int maingame() //loop do jogo
     while(running){ //while do jogo em si
         // TODO: adicionar if, caso o jogador esteja na prisão
         ClearRightScreen(0);
-        currentPlayer = &players[turnoPlayer];
+        currentPlayer = &players[playerInic];
         if(turnos >= playerCount){
             turnos = 0; }
         if(currentPlayer->turno != turnos){
