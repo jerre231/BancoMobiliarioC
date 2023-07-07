@@ -51,6 +51,15 @@ int SCREENSIZE_X = 172;
 
 int SCREENSIZE_Y = 40;
 
+void clearScreen(){
+    system("clear || cls");
+}
+
+int rollDice(){
+    int dice = (rand()%6)+1;
+    return dice;
+}
+
 void BubbleSort(int *vetor, size_t tamanho) //função para ordenar vetores de forma crescente: order("nome do vetor", "tamanho do vetor");
 {
     for (int i = 0; i < tamanho - 1; ++i) {
@@ -162,7 +171,7 @@ void declarePlayers(struct player player[]) {
             }
         }
     }
-sleep(5);
+//sleep(5); NAO ESTAVA FUNCIONANDO NO MAC?
 }
 
 //ANSI ESCAPE CODE FUNÇOES:

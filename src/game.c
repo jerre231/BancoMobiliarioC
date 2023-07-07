@@ -5,11 +5,6 @@ bool running = true; //o while do jogo começa rodando por enquanto
 int turnos = 0;
     //quantidade de turnos total, turno atual de qual jogador
 
-int rollDice(){
-    int dice = (rand()%6)+1;
-    return dice;
-}
-
 int maingame() //loop do jogo
 {    
     declarePlayers(players);    //iniciando variáveis

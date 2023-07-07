@@ -1,9 +1,5 @@
 #include "houses.c"
 
-void clearScreen(){
-    system("clear || cls");
-}
-
 void printTable(){
     clearScreen();
     restoreConsole();
