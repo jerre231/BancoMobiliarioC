@@ -103,7 +103,7 @@ struct player{ //Definindo a as variáveis de cada jogador
 struct player players[10], *currentPlayer;
 
 void declarePlayers(struct player player[]) {
-    printf("Digite o número de jogadores (max: 10):\n.: ");
+    printf("Digite o numero de jogadores (max: 10):\n.: ");
     scanf("%i", &playerCount);
     clearScreen();
 
@@ -148,16 +148,13 @@ void declarePlayers(struct player player[]) {
 
     for (int i = 0; i < playerCount; i++) {
         int rodar;
-        printf("\nDigite 1 para jogar os dados de %s:\n.: ", player[i].nome);
-        scanf("%i", &rodar);
-
-        if (rodar == 1) {
-            int a = rollDice();
-            int b = rollDice();
-            sorte[i] = a + b;
-            sorteaux[i] = a + b;
-            printf("\nOs dados deram %i e %i, total de %i\n", a, b, sorte[i]);
-        }
+        printf("\nAperte um botao para jogar os dados de %s:\n.: ", player[i].nome);
+        getchar();
+        int a = rollDice();
+        int b = rollDice();
+        sorte[i] = a + b;
+        sorteaux[i] = a + b;
+        printf("\nOs dados deram %i e %i, total de %i\n", a, b, sorte[i]);
     }
 
     order(sorte, playerCount);
@@ -166,11 +163,14 @@ void declarePlayers(struct player player[]) {
         for (int j = 0; j < playerCount; j++) {
             if (sorteaux[i] == sorte[j]) {
                 player[i].turno = j;
-                printf("\n\nO jogador %s está na posição %i\n", player[i].nome, player[i].turno+1);
+                printf("\n\nO jogador %s esta na posicao %i\n", player[i].nome, player[i].turno+1);
                          
             }
         }
     }
+    printf("Aperte qualquer botao para ir ao jogo\n");
+    fflush(stdin);
+    getchar();
 //sleep(5); NAO ESTAVA FUNCIONANDO NO MAC?
 }
 

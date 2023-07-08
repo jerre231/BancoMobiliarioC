@@ -75,7 +75,8 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
                 default:
                     move(95,38); printf("Opcao invalida, por favor tente novamente.");
                     move(95,39); printf("Pressione qualquer botao para continuar.");
-                    move(95,40); getc("");
+                    fflush(stdin);
+                    move(95,40); getchar();
                     ClearRightScreen(37);
                     goto choicewannabuyhouse;
                     break;
@@ -85,7 +86,8 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
 
         case '2':
             move(95,30); printf("Escolha qual propriedade voce deseja administrar. Aperte 0 para voltar");
-            choicewheretosell: move(95,31); int opcaoProp2 = (int)getc("");
+            choicewheretosell: move(95,31); int opcaoProp2 = getc("");
+            opcaoProp2 = opcaoProp2 - '0';
             if(opcaoProp2 == 0) {
                 ClearRightScreen(29);
                 goto choicebuyorsell;
