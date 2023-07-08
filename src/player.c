@@ -34,7 +34,7 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
         case '1':
             move(95,30); printf("Escolha qual propriedade voce deseja administrar.");
             choicewheretobuy: move(95,31); fflush(stdin); int opcaoProp = (int)getchar();
-            if( (currentPlayer->properties[opcaoProp] > 40) || (currentPlayer->properties[opcaoProp]) < 0) {
+            if( (currentPlayer->properties[opcaoProp] > 40) || (currentPlayer->properties[opcaoProp]) < 0 || (currentPlayer->properties[opcaoProp]) == 0) {
                 move(95,32); printf("Opcao invalida, por favor tente novamente.");
                 move(95,33); printf("Pressione qualquer botao para continuar.");
                 fflush(stdin);
@@ -86,7 +86,7 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
 
         case '2':
             move(95,30); printf("Escolha qual propriedade voce deseja administrar. Aperte 0 para voltar");
-            choicewheretosell: move(95,31); int opcaoProp2 = getc("");
+            choicewheretosell: move(95,31); int opcaoProp2 = getchar();
             opcaoProp2 = opcaoProp2 - '0';
             if(opcaoProp2 == 0) {
                 ClearRightScreen(29);
@@ -95,14 +95,14 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
             if( (currentPlayer->properties[opcaoProp2] > 40) || (currentPlayer->properties[opcaoProp2]) < 0) {
                 move(95,32); printf("Opcao invalida, por favor tente novamente.");
                 move(95,33); printf("Pressione qualquer botao para continuar.");
-                move(95,34); getc("");
+                move(95,34); getchar();
                 ClearRightScreen(31);
                 goto choicewheretosell;
             }
             if(houses[currentPlayer->properties[opcaoProp2]].housesBuilt <= 0) {
                 move(95,32); printf("Voce nao tem nenhuma casa aqui! Por favor tente novamente");
                 move(95,33); printf("Pressione qualquer botao para continuar.");
-                move(95,34); getc("");
+                move(95,34); getchar();
                 ClearRightScreen(31);
                 goto choicewheretosell;
             }
@@ -110,13 +110,13 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
             move(95, 33); printf("Deseja vender uma casa aqui?");
             move(95, 34); printf("1- SIM");
             move(95, 35); printf("2- VOLTAR");
-            choicewannasellhouse: move(95, 36); char opcao3 = getc("");
+            choicewannasellhouse: move(95, 36); char opcao3 = getchar();
             switch (opcao3) {
                 case '1':
                     move(95,37); printf("Casa vendida com sucesso!");
                     move(95,38); printf("O menu de compras agora sera atualizado.");
                     move(95,39); printf("Pressione qualquer botao para continuar.");
-                    move(95,40); getc("");
+                    move(95,40); getchar();
                     ClearRightScreen(0);
                     return EXIT_SUCCESS;
                     break;
@@ -127,7 +127,7 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
                 default:
                     move(95,37); printf("Opcao invalida, por favor tente novamente.");
                     move(95,38); printf("Pressione qualquer botao para continuar.");
-                    move(95,39); getc("");
+                    move(95,39); getchar();
                     ClearRightScreen(36);
                     goto choicewannasellhouse;
                     break;
@@ -171,7 +171,8 @@ int delPropertieToPlayer(struct player *currentPlayer, struct house houses[], in
 
 void playerLosed(struct player *currentPlayer) 
 {
-    printf("O jogador %s foi a falencia!", currentPlayer->nome);
+    move(95, 0); printf("O jogador %s foi a falencia!", currentPlayer->nome);
+    movePlayer(currentPlayer, currentPlayer->pos, 666);
     currentPlayer->faliu = TRUE;
     // TODO: Devolver propriedades do jogador ao banco (?)
 }

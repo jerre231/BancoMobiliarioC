@@ -41,7 +41,7 @@ enum colours  {RESET,INCREASED_INTENSITY,BLACK=30,RED,GREEN,YELLOW,BLUE,PURPLE,C
 
 char Nomes[10][20];
 
-int playerCount;
+int playerCount, jogadoresAtivos;
 
 int housesCount = 40;
 
@@ -149,12 +149,34 @@ void declarePlayers(struct player player[]) {
     for (int i = 0; i < playerCount; i++) {
         int rodar;
         printf("\nAperte um botao para jogar os dados de %s:\n.: ", player[i].nome);
+        fflush(stdin);
         getchar();
         int a = rollDice();
         int b = rollDice();
         sorte[i] = a + b;
         sorteaux[i] = a + b;
         printf("\nOs dados deram %i e %i, total de %i\n", a, b, sorte[i]);
+    }
+
+    recheck:
+    for(int i = 0; i < playerCount; i++) {
+        for(int j = 0; j < playerCount; j++) {
+            if((sorteaux[i] == sorte[j]) && !(i == j)) {
+                printf("\n%s e %s rolaram iguais, rolam para desempatar! \n", player[i].nome, player[j].nome);
+                int c = rollDice();
+                int d = rollDice();
+                if((c > d) || (c==d)) {
+                    printf("\n%s rolou maior! leva a vantagem no desempate. \n", player[i].nome);
+                    sorteaux[i]++;
+                    sorte[i]++;
+                } else {
+                    printf("\n%s rolou maior! leva a vantagem no desempate. \n", player[j].nome);
+                    sorteaux[j]++;
+                    sorte[j]++;
+                }
+                goto recheck;
+            }
+        }
     }
 
     order(sorte, playerCount);
@@ -164,11 +186,10 @@ void declarePlayers(struct player player[]) {
             if (sorteaux[i] == sorte[j]) {
                 player[i].turno = j;
                 printf("\n\nO jogador %s esta na posicao %i\n", player[i].nome, player[i].turno+1);
-                         
             }
         }
     }
-    printf("Aperte qualquer botao para ir ao jogo\n");
+    printf("\nAperte qualquer botao para ir ao jogo\n");
     fflush(stdin);
     getchar();
 //sleep(5); NAO ESTAVA FUNCIONANDO NO MAC?
@@ -211,8 +232,11 @@ void movePlayer(struct player *currentPlayer,int OldLocationID,int NewLocationID
     move(mapXY[OldLocationID][0]+(playerID)%4,mapXY[OldLocationID][1]+(playerID)/4);
     printf(" ");
     changeTextColour(currentPlayer->colour);
-    move(mapXY[NewLocationID][0]+(playerID)%4,mapXY[NewLocationID][1]+(playerID)/4);
-    printf("o");
+    if(NewLocationID == 666) {
+    } else {
+        move(mapXY[NewLocationID][0]+(playerID)%4,mapXY[NewLocationID][1]+(playerID)/4);
+        printf("o");
+    }
     changeTextColour(RESET);
     move(95,5);
 }

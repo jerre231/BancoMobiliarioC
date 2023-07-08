@@ -32,7 +32,10 @@ int maingame() //loop do jogo
             playerInic = 0; }
         if(currentPlayer->turno != turnos){
             playerInic++;
-            goto SAIRGAME; }
+            goto SAIRGAME;  }
+        if(currentPlayer->faliu == 1){
+            turnos++;
+            goto SAIRGAME;  }
 
         printPlayerInfo(currentPlayer);
 
@@ -205,8 +208,10 @@ int maingame() //loop do jogo
         while(TRUE) {   //Turno do player atual
             ClearRightScreen(0);
             printPlayerInfo;
-            move(95,3); printf("%s O que deseja fazer?", currentPlayer->nome);
-            move(95,4); printf("1 - COMPRAR E VENDER CASAS"); move(95,5); printf("2 - PASSAR TURNO"); move(95,7); printf("3 - DESISTIR");
+            changeTextColour(currentPlayer->colour);
+            move(95,3); printf("%s ", currentPlayer->nome);
+            changeTextColour(RESET); printf("o que deseja fazer?");
+            move(95,4); printf("1 - COMPRAR E VENDER CASAS"); move(95,5); printf("2 - PASSAR TURNO"); move(95,6); printf("3 - DESISTIR");
             move(95,8); fflush(stdin); char opcao = getchar();
             switch (opcao){
                 case '1':
@@ -219,9 +224,12 @@ int maingame() //loop do jogo
                     break;
                 case '3':
                     move(95,9); printf("Voce tem certeza disso? nao sera possivel voltar... (1 = SIM)");
+                    fflush(stdin);
                     move(95,10); char opcao2 = getchar();
                     if(opcao2 == '1') {
+                        ClearRightScreen(0);
                         playerLosed(currentPlayer);
+                        goto turnoacabou;
                     } else {
                         move(95,11); printf("Tudo bem entao, nada sera feito.");
                     }
