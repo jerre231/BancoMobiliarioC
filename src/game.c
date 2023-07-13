@@ -25,11 +25,13 @@ int maingame() //loop do jogo
         fflush(stdin);
         ClearRightScreen(0);
 
-        currentPlayer = &players[playerInic];
         if(turnos >= playerCount){
             turnos = 0; }
         if(playerInic >= playerCount){
             playerInic = 0; }
+
+        currentPlayer = &players[playerInic];
+        
         if(currentPlayer->turno != turnos){
             playerInic++;
             goto SAIRGAME;  }
