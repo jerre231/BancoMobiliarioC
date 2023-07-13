@@ -8,7 +8,10 @@ int turnos = 0;
 int maingame() //loop do jogo
 {    
     declarePlayers(players);    //iniciando variáveis
-    declareHouses(houses);
+    if(readMapInfo() != EXIT_SUCCESS){
+        printf("Erro na funcao readMapInfo");
+        return EXIT_FAILURE;
+    }
 
     printTable();   //printando o tabuleiro, que fica fixo
 
@@ -31,7 +34,7 @@ int maingame() //loop do jogo
             playerInic = 0; }
 
         currentPlayer = &players[playerInic];
-        
+
         if(currentPlayer->turno != turnos){
             playerInic++;
             goto SAIRGAME;  }
@@ -198,11 +201,6 @@ int maingame() //loop do jogo
 
             case FREE_DAY:
             move(95,5); printf("Você recebeu um dia de folga! Fique um turno sem jogar.");
-            break;
-
-            case SORTE_OU_REVES:
-            move(95,5); printf("Você vai retirar uma carta aleatória!");
-            // TODO: adicionar sistema de carta sorte ou reves
             break;
             
         }

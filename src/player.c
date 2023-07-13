@@ -43,7 +43,7 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
                 goto choicewheretobuy;
             }
             move(95, 32); printf("O preco para comprar uma casa nessa propriedade e $%d", houses[propertiesPlayer[(int)opcao]].buildCost);
-            move(95, 33); printf("O alugel ao comprar uma casa nessa propriedade e $%d", houses[propertiesPlayer[(int)opcao]].rentWithHouses);
+            move(95, 33); printf("O alugel ao comprar uma casa nessa propriedade e $%d", houses[propertiesPlayer[(int)opcao]].rentWithHouses[(currentHouse->housesBuilt)+1]);
             move(95, 34); printf("Deseja comprar uma casa aqui?");
             move(95, 35); printf("1- SIM");
             move(95, 36); printf("2- VOLTAR");
