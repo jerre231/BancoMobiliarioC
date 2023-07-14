@@ -74,7 +74,7 @@ int maingame() //loop do jogo
             oldLocation = currentPlayer->pos;
             currentPlayer->pos += housesToWalk;
 
-            if(currentPlayer->pos >= 40){currentPlayer->pos -= 40;}
+            if(currentPlayer->pos >= 40){currentPlayer->pos -= 40;currentPlayer->money += 200;}
 
             movePlayer(currentPlayer, oldLocation, currentPlayer->pos);
         }
@@ -240,10 +240,12 @@ int maingame() //loop do jogo
                         goto turnoacabou;
                     } else {
                         move(95,11); printf("Tudo bem entao, nada sera feito.");
+                        move(95,12); fflush(stdin); getchar();
                     }
                     break;
                 default:
                     move(95,9); printf("Opcao invalida, por favor tente novamente.");
+                    move(95,12); fflush(stdin); getchar();
                     break;
             };
 

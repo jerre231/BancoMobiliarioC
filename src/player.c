@@ -31,6 +31,17 @@ int delPropertieToPlayer(struct player *currentPlayer, struct house houses[], in
     return EXIT_FAILURE;
 }
 
+void updateNetworth(struct player *currentPlayer) {
+    int valorPropriedades;
+    for(int i = 0; i < 40; i++){
+        if(currentPlayer->properties[i] != 0) {
+            valorPropriedades += (int)(houses[i].cost/2);
+            valorPropriedades += (int)((houses[i].housesBuilt)*(houses[i].buildCost))/2;
+        }
+    }
+    currentPlayer->netWorth = currentPlayer->money + valorPropriedades;
+}
+
 int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   // Lembrar de sempre chamar a funcao printPlayerInfo() depois de executar essa funcao, pois ela vai apagar oq foi printado antes
 {
     int *propertiesPlayer = (currentPlayer->properties);
@@ -46,7 +57,9 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
     {
         move(95,startlineLIST+i); printf("%d- %s (%d casas e um aluguel atual de $%d)", propertiesPlayer[i], houses[propertiesPlayer[i]].name, houses[propertiesPlayer[i]].housesBuilt, houses[propertiesPlayer[i]].rent);
     }
-    buyorsell: move(95,25); printf("Deseja comprar ou vender algo?");
+    buyorsell:
+    updateNetworth(currentPlayer);
+    move(95,25); printf("Deseja comprar ou vender algo?");
     move(95,26); printf("1- COMPRAR CASAS");
     move(95,27); printf("2- VENDER PROPRIEDADES/CASAS");
     move(95,28); printf("3- VOLTAR");
@@ -212,6 +225,7 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
             break;
 
         case '3':
+            updateNetworth(currentPlayer);
             return EXIT_SUCCESS;
             break;
         default:
