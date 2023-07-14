@@ -63,6 +63,16 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
                 ClearRightScreen(31);
                 goto choicewheretobuy;
             }
+            else if(houses[currentPlayer->properties[opcaoProp]].type == HOUSE_CMP){
+                move(95, 32); printf("A propriedade selecionada e do tipo companhia!");
+                move(95, 33); printf("Nao se pode comprar casas para companhias");
+                move(95, 34); printf("Pressione qualquer botao para continuar.");
+                fflush(stdin);
+                move(95,35); getchar();
+                ClearRightScreen(25);
+                goto choicebuyorsell;
+
+            }
             move(95, 32); printf("O preco para comprar uma casa nessa propriedade e $%d", houses[propertiesPlayer[opcaoProp]].buildCost);
             move(95, 33); printf("O alugel ao comprar uma casa nessa propriedade e $%d", houses[propertiesPlayer[opcaoProp]].rentWithHouses[(currentHouse->housesBuilt)+1]);
             move(95, 34); printf("Deseja comprar uma casa aqui?");
