@@ -122,6 +122,8 @@ int maingame() //loop do jogo
                     addPropertieToPlayer(currentPlayer, houses, currentHouse->ID);
                     ClearRightScreen(4);
                     move(95,5); printf("Voce adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
+                    currentPlayer->properties[currentHouse->ID] = currentHouse->ID;
+                    updateHousesRent(currentHouse->ID);
                     move(95,6); printf("Pressione qualquer botao para continuar... \n");
                     fflush(stdin);
                     move(95,7); getchar();
@@ -142,7 +144,7 @@ int maingame() //loop do jogo
             move(95,6); printf("Você caiu na casa %s, ", currentHouse->name);
             if(currentHouse->isOwnedBySomeone)
             {
-                move(95,7); printf("ela e possuída por %s.\n", players[currentHouse->ownerID].nome);
+                move(95,7); printf("ela e possuida por %s.\n", players[currentHouse->ownerID].nome);
                 move(95,8); printf("Você deve pagar %d$ ao proprietario.\n", housesToWalk*(currentHouse->rent));
                 // TODO: adicionar o sistema de pagar aluguel
                 if(currentPlayer->netWorth < housesToWalk*(currentHouse->rent)) { // Falencia!
@@ -167,7 +169,7 @@ int maingame() //loop do jogo
             } 
             else 
             {
-                move(95,7); printf("ela não é possuída por ninguém.\n");
+                move(95,7); printf("ela nao e possuida por ninguem.\n");
                 move(95,8); printf("%s deseja comprar essa propriedade por %i?\n", currentPlayer->nome, currentHouse->cost);
                 move(95,9); printf("1 - SIM"); move(95,10); printf("2 - NAO"); move(95,11); printf("3 - COMPRAR E VENDER CASAS");
                 move(95,12); fflush(stdin); char opcao = getchar();
@@ -179,6 +181,7 @@ int maingame() //loop do jogo
                     addPropertieToPlayer(currentPlayer, houses, currentHouse->ID);
                     ClearRightScreen(4);
                     move(95,5); printf("Voce adquiriu a casa %s!.", currentHouse->name); // TODO: adicionar sistema de não poder pagar
+                    updateHousesRent(currentHouse->ID);
                     move(95,6); printf("Pressione qualquer botao para continuar... \n");
                     fflush(stdin);
                     move(95,7); getchar();
