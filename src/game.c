@@ -266,6 +266,7 @@ int maingame() //loop do jogo
 
 // int main
 int main(){
+choice_mainmenu:
     clearScreen();
     printf("\n                                              888b     d888  .d88888b.  888b    888  .d88888b.  8888888b.   .d88888b.  888    Y88b   d88P           "); 
     printf("\n                                              8888b   d8888 d88P\" \"Y88b 8888b   888 d88P\" \"Y88b 888   Y88b d88P\" \"Y88b 888     Y88b d88P      ");       
@@ -279,7 +280,8 @@ int main(){
     srand((unsigned)time(NULL));
     //checkWindowSize(172, 40);     // TODO: RESOLVER ISSO AQUI DE ALGUM JEITO
     printf("1- Novo Jogo \n");
-    choice_mainmenu:
+    printf("2- Instrucoes \n");
+    printf("3- Creditos \n");
     fflush(stdin);
     char choice = getchar();
     if (choice == '1') 
@@ -290,6 +292,42 @@ int main(){
             getchar();
         }
     }
+
+    else if (choice == '2')
+    {
+    	clearScreen();
+	char url[]="regras.txt";
+	char ch;
+	    FILE *instrucao;
+	    instrucao = fopen(url, "r");
+	    while((ch=fgetc(instrucao))!=EOF){
+	    putchar(ch);
+	    }
+	    printf("\nAperte qualquer botao para fechar o menu de instrucoes");
+	    fflush(stdin);
+	    getchar();
+	    fclose(instrucao);
+	    goto choice_mainmenu;
+    }
+
+
+    else if (choice == '3')
+    {
+	    clearScreen();
+	    printf("\nTrabalho desenvolvido pelos Alunos:\n");
+	    printf("Joao Vitor Pinto Vizeu\n");
+	    printf("Joao Ricardo Monteiro Scofield Lauar\n");
+	    printf("Joao Marcos\n");
+	    printf("Marias Vilas-Boas\n");
+	    printf("Bernardo Pache\n");
+
+	    printf("\nProfessora: Priscila Machado Vieira Lima\n");
+	    printf("Materia: Algoritmos e Programacao\n");
+	    fflush(stdin);
+	    getchar();
+	    goto choice_mainmenu;
+    }
+
     else
     {
         printf("Opcao invalida! Por favor tente novamente.\n");
