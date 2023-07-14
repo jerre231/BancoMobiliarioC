@@ -77,8 +77,9 @@ int readMapInfo()
                 break; }
             if(strcmp(leitura, "-")!=0){
                 switch(coluna)  {
+
                     case ID_H:
-                        houses[linha-1].ID = atoi(leitura);
+                        houses[linha-1].ID = atoi(leitura)-1;
                         break;
 
                     case TYPE_H:    //HOUSE_STD, HOUSE_CMP, GO_TO_JAIL, FREE_DAY
@@ -165,38 +166,6 @@ int readMapInfo()
                         houses[linha-1].buildCost = atoi(leitura);
                         break;}
                         else {break;}
-                    
-                    /* if(houses[linha-1].isOwnable) {
-                        houses[linha-1].housesBuilt = 0;
-                        houses[linha-1].isSetCompleted = FALSE;
-                        houses[linha-1].ownerID = NULL;
-                        switch(coluna)  {
-                            case COST_H:
-                                houses[linha-1].cost = atoi(leitura);
-                                break;
-                            case RENT_H:
-                                houses[linha-1].rent = atoi(leitura);
-                                break;
-                            case RENTW1_H:
-                                houses[linha-1].rentWithHouses[0] = atoi(leitura);
-                                break;
-                            case RENTW2_H:
-                                houses[linha-1].rentWithHouses[1] = atoi(leitura);
-                                break;
-                            case RENTW3_H:
-                                houses[linha-1].rentWithHouses[2] = atoi(leitura);
-                                break;
-                            case RENTW4_H:
-                                houses[linha-1].rentWithHouses[3] = atoi(leitura);
-                                break;
-                            case RENTW5_H:
-                                houses[linha-1].rentWithHouses[4] = atoi(leitura);
-                                break;
-                            case HCOST_H:
-                                houses[linha-1].buildCost = atoi(leitura);
-                                break;
-                        }
-                    } */ // TODO: excluir essa função
                 }
             }
             leitura = strtok(NULL, ",");

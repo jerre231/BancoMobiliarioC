@@ -44,7 +44,7 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
     int startlineLIST = 6;
     for(int i = 0; i < currentPlayer->numberofProperties; i++)
     {
-        move(95,startlineLIST+i); printf("%d- %s (%d casas e um aluguel atual de $%d)", propertiesPlayer[i]-1, houses[propertiesPlayer[i]].name, houses[propertiesPlayer[i]].housesBuilt, houses[propertiesPlayer[i]].rent);
+        move(95,startlineLIST+i); printf("%d- %s (%d casas e um aluguel atual de $%d)", propertiesPlayer[i], houses[propertiesPlayer[i]].name, houses[propertiesPlayer[i]].housesBuilt, houses[propertiesPlayer[i]].rent);
     }
     buyorsell: move(95,25); printf("Deseja comprar ou vender algo?");
     move(95,26); printf("1- COMPRAR CASAS");

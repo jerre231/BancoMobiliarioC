@@ -141,11 +141,11 @@ int maingame() //loop do jogo
             break;
 
             case HOUSE_CMP:
-            move(95,6); printf("Você caiu na casa %s, ", currentHouse->name);
+            move(95,6); printf("Voce caiu na casa %s, ", currentHouse->name);
             if(currentHouse->isOwnedBySomeone)
             {
                 move(95,7); printf("ela e possuida por %s.\n", players[currentHouse->ownerID].nome);
-                move(95,8); printf("Você deve pagar %d$ ao proprietario.\n", housesToWalk*(currentHouse->rent));
+                move(95,8); printf("Voce deve pagar %d$ ao proprietario.\n", housesToWalk*(currentHouse->rent));
                 // TODO: adicionar o sistema de pagar aluguel
                 if(currentPlayer->netWorth < housesToWalk*(currentHouse->rent)) { // Falencia!
                     move(95,9); printf("O jogador %s nao tem como pagar o aluguel!.", currentPlayer->nome);
@@ -208,6 +208,9 @@ int maingame() //loop do jogo
             move(95,5); printf("Você recebeu um dia de folga! Fique um turno sem jogar.");
             break;
             
+            default:
+            move(95,5); printf("Casa indefinida! Um beijo do desenvolvedor :3");
+            break;
         }
 
         while(TRUE) {   //Turno do player atual
