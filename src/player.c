@@ -33,7 +33,7 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
     switch (opcao) {
         case '1':
             move(95,30); printf("Escolha qual propriedade voce deseja administrar.");
-            choicewheretobuy: move(95,31); fflush(stdin); int opcaoProp = (int)getchar();
+            choicewheretobuy: move(95,31); fflush(stdin); int opcaoProp; scanf("%d", &opcaoProp);
             if( (currentPlayer->properties[opcaoProp] > 40) || (currentPlayer->properties[opcaoProp]) < 0 || (currentPlayer->properties[opcaoProp]) == 0) {
                 move(95,32); printf("Opcao invalida, por favor tente novamente.");
                 move(95,33); printf("Pressione qualquer botao para continuar.");
@@ -86,12 +86,14 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
 
         case '2':
             move(95,30); printf("Escolha qual propriedade voce deseja administrar. Aperte 0 para voltar");
-            choicewheretosell: move(95,31); int opcaoProp2 = getchar();
+            choicewheretosell: move(95,31); int opcaoProp2; scanf("%d", &opcaoProp2);
             opcaoProp2 = opcaoProp2 - '0';
+
             if(opcaoProp2 == 0) {
                 ClearRightScreen(29);
                 goto choicebuyorsell;
             }
+
             if( (currentPlayer->properties[opcaoProp2] > 40) || (currentPlayer->properties[opcaoProp2]) < 0) {
                 move(95,32); printf("Opcao invalida, por favor tente novamente.");
                 move(95,33); printf("Pressione qualquer botao para continuar.");
@@ -99,13 +101,54 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
                 ClearRightScreen(31);
                 goto choicewheretosell;
             }
-            if(houses[currentPlayer->properties[opcaoProp2]].housesBuilt <= 0) {
-                move(95,32); printf("Voce nao tem nenhuma casa aqui! Por favor tente novamente");
+
+            /* if(houses[currentPlayer->properties[opcaoProp2]].ownerID != currentPlayer->ID){
+                move(95,32); printf("Voce nao possui este lugar! Por favor tente novamente");
                 move(95,33); printf("Pressione qualquer botao para continuar.");
                 move(95,34); getchar();
                 ClearRightScreen(31);
                 goto choicewheretosell;
+            } */ //TODO: Essa funcao não faz o menor sentido!!! Excluir ela
+
+            if(houses[currentPlayer->properties[opcaoProp2]].housesBuilt <= 0) {
+                move(95,32); printf("Voce nao tem nenhuma casa aqui!");
+                move(95, 33); printf("Deseja vender a propriedade?");
+                move(95, 34); printf("1- SIM");
+                move(95, 35); printf("2- VOLTAR");
+                choicewannasellproperty: move(95, 36); char opcao4 = getchar();
+                switch(opcao4) {
+                    case '1':
+                    currentPlayer->money += (houses[currentPlayer->properties[opcaoProp2]].cost)/2;
+                    houses[currentPlayer->properties[opcaoProp2]].isOwnedBySomeone = FALSE;
+                    if(houses[currentPlayer->properties[opcaoProp2]].isSetCompleted) {
+                        for(int i = 0; i < 40; i++) {
+                            if(houses[i].setID == houses[currentPlayer->properties[opcaoProp2]].setID) {
+                                houses[i].isSetCompleted == FALSE;
+                            }
+                        }
+                    }
+                    move(95,37); printf("Propriedade vendida com sucesso!");
+                    move(95,38); printf("O menu de compras agora sera atualizado.");
+                    move(95,39); printf("Pressione qualquer botao para continuar.");
+                    move(95,40); getchar();
+                    ClearRightScreen(0);
+                    return EXIT_SUCCESS;
+                    break;
+                case '2':
+                    ClearRightScreen(29);
+                    goto choicebuyorsell;
+                    break;
+                default:
+                    move(95,37); printf("Opcao invalida, por favor tente novamente.");
+                    move(95,38); printf("Pressione qualquer botao para continuar.");
+                    move(95,39); getchar();
+                    ClearRightScreen(36);
+                    goto choicewannasellproperty;
+                    break;
+                }
+                ClearRightScreen(31);
             }
+
             move(95, 32); printf("Voce ganhara $%.0f ao vender uma casa dessa propriedade", (houses[currentPlayer->properties[opcaoProp2]].buildCost)/2);
             move(95, 33); printf("Deseja vender uma casa aqui?");
             move(95, 34); printf("1- SIM");
@@ -113,9 +156,12 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
             choicewannasellhouse: move(95, 36); char opcao3 = getchar();
             switch (opcao3) {
                 case '1':
+                    currentPlayer->money += (houses[currentPlayer->properties[opcaoProp2]].buildCost)/2;
+                    houses[currentPlayer->properties[opcaoProp2]].housesBuilt -= 1;
                     move(95,37); printf("Casa vendida com sucesso!");
                     move(95,38); printf("O menu de compras agora sera atualizado.");
                     move(95,39); printf("Pressione qualquer botao para continuar.");
+                    // TODO: excluir casa do player e ressarcir dinheiro
                     move(95,40); getchar();
                     ClearRightScreen(0);
                     return EXIT_SUCCESS;

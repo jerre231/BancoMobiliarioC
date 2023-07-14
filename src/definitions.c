@@ -49,7 +49,7 @@ int startingMoney = 200; //Dinheiro Inicial dos players, TODO: pode ser ajustado
 
 int SCREENSIZE_X = 172;
 
-int SCREENSIZE_Y = 40;
+int SCREENSIZE_Y = 45;
 
 void clearScreen(){
     system("clear || cls");
@@ -192,7 +192,6 @@ void declarePlayers(struct player player[]) {
     printf("\nAperte qualquer botao para ir ao jogo\n");
     fflush(stdin);
     getchar();
-//sleep(5); NAO ESTAVA FUNCIONANDO NO MAC?
 }
 
 //ANSI ESCAPE CODE FUNÇOES:

@@ -10,6 +10,8 @@ int maingame() //loop do jogo
     declarePlayers(players);    //iniciando variáveis
     if(readMapInfo() != EXIT_SUCCESS){
         printf("Erro na funcao readMapInfo");
+        printf("Error: %d (%s)\n", errno, strerror(errno));
+        getchar();
         return EXIT_FAILURE;
     }
 
@@ -83,7 +85,7 @@ int maingame() //loop do jogo
             move(95,6); printf("Voce caiu na casa %s, ", currentHouse->name);
             if(currentHouse->isOwnedBySomeone)
             {
-                move(95,7); printf("ela e possuída por %s.\n", players[currentHouse->ownerID].nome);
+                move(95,7); printf("ela e possuida por %s.\n", players[currentHouse->ownerID].nome);
                 move(95,8); printf("Voce deve pagar %d$ ao proprietario.\n", currentHouse->rent);
                 // TODO: adicionar o sistema de pagar aluguel
                 if(currentPlayer->netWorth < currentHouse->rent) { // Falencia!
@@ -277,6 +279,7 @@ int main(){
         if(maingame()!= EXIT_SUCCESS)
         {
             printf("Error in maingame");
+            getchar();
         }
     }
     else

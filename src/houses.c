@@ -1,5 +1,6 @@
 #include "definitions.c"
-#define MAP_INFO_PATH "data/map.csv"
+#define MAP_INFO_PATH "C:\\Users\\jvpvi\\Desktop\\GitHub_projetos\\github\\BancoMobiliarioC\\data\\map.csv"
+//C:\\Users\\jvpvi\\Desktop\\GitHub_projetos\\github\\BancoMobiliarioC\\data
 
 enum{HOUSE_STD, HOUSE_CMP, GO_TO_JAIL, FREE_DAY};
 enum{ID_H, TYPE_H, NAME_H, SET_ID_H, COST_H, RENT_H, RENTW1_H, RENTW2_H, RENTW3_H, RENTW4_H, RENTW5_H, HCOST_H};
@@ -22,7 +23,6 @@ struct house {
     int ID;
     int type;
     int rentWithHouses[5]; //Alugueis de 1 casa até 5 casas
-    int rentWithHotel; //Aluguel do local com hotel
     char name[30];
     int buildCost; //Custo do hotel ou casa
     unsigned int isOwnedBySomeone:1;
@@ -32,9 +32,9 @@ struct house {
     int setColor; //Cor associada com o Set
     int ownerID;
     int housesBuilt;
-    int hotelBuilt;
     int cost;
     int rent;
+    int baseRent;
 };
 
 struct house houses[40], *currentHouse;
@@ -50,16 +50,25 @@ void declareHouses(struct house houses[]){
         houses[i].rent = 0;
     }
 }
-*/
+*/ // TODO: excluir essa função
 
-int readMapInfo() 
+void updateHousesRent(int houseID) {
+    if(houses[houseID].housesBuilt > 0) {
+        houses[houseID].rent = houses[houseID].rentWithHouses[(houses[houseID].housesBuilt)-1]; }
+    else {
+        houses[houseID].rent = houses[houseID].baseRent;
+    }
+}
+
+int readMapInfo()
 {
     FILE *file = fopen(MAP_INFO_PATH, "r");
     if(!file){
         return EXIT_FAILURE;}
 
     char buffer[1024];
-    int linha, coluna = 0;
+    int linha = 0;
+    int coluna = 0;
     while(fgets(buffer, 1024, file)){
         coluna = 0;
         char* leitura = strtok(buffer, ",");
@@ -73,24 +82,27 @@ int readMapInfo()
                         break;
 
                     case TYPE_H:    //HOUSE_STD, HOUSE_CMP, GO_TO_JAIL, FREE_DAY
-                        if(strcmp(leitura, "HOUSE_STD")){
+                        if(strcmp(leitura, "HOUSE_STD")==0){
                             houses[linha-1].type = HOUSE_STD;
                             houses[linha-1].isOwnable = TRUE;
-                            houses[linha-1].isOwnable = TRUE;
                             houses[linha-1].isOwnedBySomeone = FALSE;
-                            houses[linha-1].ownerID = houses[linha-1].housesBuilt = 0;
+                            houses[linha-1].housesBuilt = 0;
+                            houses[linha-1].isSetCompleted = FALSE;
+                            houses[linha-1].ownerID = NULL;
                         }
-                        else if(strcmp(leitura, "HOUSE_CMP")){
+                        else if(strcmp(leitura, "HOUSE_CMP")==0){
                             houses[linha-1].type = HOUSE_CMP;
                             houses[linha-1].isOwnable = TRUE;
                             houses[linha-1].isOwnedBySomeone = FALSE;
-                            houses[linha-1].ownerID = houses[linha-1].housesBuilt = 0;
+                            houses[linha-1].housesBuilt = 0;
+                            houses[linha-1].isSetCompleted = FALSE;
+                            houses[linha-1].ownerID = NULL;
                         }
-                        else if(strcmp(leitura, "GO_TO_JAIL")){
+                        else if(strcmp(leitura, "GO_TO_JAIL")==0){
                             houses[linha-1].type = GO_TO_JAIL;
                             houses[linha-1].isOwnable = FALSE;
                         }
-                        else if(strcmp(leitura, "FREE_DAY")){
+                        else if(strcmp(leitura, "FREE_DAY")==0){
                             houses[linha-1].type = FREE_DAY;
                             houses[linha-1].isOwnable = FALSE;
                         }
@@ -113,7 +125,48 @@ int readMapInfo()
                             case 8: houses[linha-1].setColor = LIGHTPURPLE_BG; break;
                         }
                         break;
-                    if(houses[linha-1].isOwnable) {
+                    case COST_H:
+                    if(leitura!="-"){
+                        houses[linha-1].cost = atoi(leitura);
+                        break; }
+                        else {break;}
+                    case RENT_H:
+                    if(leitura!="-"){
+                        houses[linha-1].baseRent = atoi(leitura);
+                        break;}
+                        else {break;}
+                    case RENTW1_H:
+                    if(leitura!="-"){
+                        houses[linha-1].rentWithHouses[0] = atoi(leitura);
+                        break;}
+                        else {break;}
+                    case RENTW2_H:
+                    if(leitura!="-"){
+                        houses[linha-1].rentWithHouses[1] = atoi(leitura);
+                        break;}
+                        else {break;}
+                    case RENTW3_H:
+                    if(leitura!="-"){
+                        houses[linha-1].rentWithHouses[2] = atoi(leitura);
+                        break;}
+                        else {break;}
+                    case RENTW4_H:
+                    if(leitura!="-"){
+                        houses[linha-1].rentWithHouses[3] = atoi(leitura);
+                        break;}
+                        else {break;}
+                    case RENTW5_H:
+                    if(leitura!="-"){
+                        houses[linha-1].rentWithHouses[4] = atoi(leitura);
+                        break;}
+                        else {break;}
+                    case HCOST_H:
+                    if(leitura!="-"){
+                        houses[linha-1].buildCost = atoi(leitura);
+                        break;}
+                        else {break;}
+                    
+                    /* if(houses[linha-1].isOwnable) {
                         houses[linha-1].housesBuilt = 0;
                         houses[linha-1].isSetCompleted = FALSE;
                         houses[linha-1].ownerID = NULL;
@@ -143,10 +196,10 @@ int readMapInfo()
                                 houses[linha-1].buildCost = atoi(leitura);
                                 break;
                         }
-                    }
+                    } */ // TODO: excluir essa função
                 }
             }
-            leitura = strtok(leitura, ",");
+            leitura = strtok(NULL, ",");
             coluna++;
         }
         linha++;
@@ -154,3 +207,4 @@ int readMapInfo()
     fclose(file);
     return EXIT_SUCCESS;
 }
+
