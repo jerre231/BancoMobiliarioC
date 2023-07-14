@@ -129,11 +129,10 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
                 move(95, 33); printf("Deseja vender a propriedade?");
                 move(95, 34); printf("1- SIM");
                 move(95, 35); printf("2- VOLTAR");
-                fflush(stdin);
-                choicewannasellproperty: move(95, 36); char opcao4 = getchar();
+                choicewannasellproperty: move(95, 36); fflush(stdin); char opcao4 = getchar();
                 switch(opcao4) {
                     case '1':
-                    currentPlayer->money += (houses[currentPlayer->properties[opcaoProp2]].cost)/2;
+                    currentPlayer->money += (int)((houses[currentPlayer->properties[opcaoProp2]].cost)/2);
                     houses[currentPlayer->properties[opcaoProp2]].isOwnedBySomeone = FALSE;
                     if(houses[currentPlayer->properties[opcaoProp2]].isSetCompleted) {
                         for(int i = 0; i < 40; i++) {
