@@ -53,8 +53,12 @@ int BuyAndSellHousesMenu(struct player *currentPlayer, struct house* houses)   /
     choicebuyorsell: move(95,29); fflush(stdin); char opcao = getchar();
     switch (opcao) {
         case '1':
-            move(95,30); printf("Escolha qual propriedade voce deseja administrar.");
+            move(95,30); printf("Escolha qual propriedade voce deseja administrar. (Digite o numero, 0 p/voltar)");
             choicewheretobuy: move(95,31); fflush(stdin); int opcaoProp; scanf("%i", &opcaoProp);
+            if(opcaoProp == 0){
+                ClearRightScreen(25);
+                goto buyorsell;
+            }
             if( (currentPlayer->properties[(int)opcaoProp] > 40) || (currentPlayer->properties[(int)opcaoProp]) < 0 || (currentPlayer->properties[(int)opcaoProp]) == 0) {
                 move(95,32); printf("Opcao invalida, por favor tente novamente.");
                 move(95,33); printf("Pressione qualquer botao para continuar.");
